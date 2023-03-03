@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="CourseManagement.Modules.Views.UserInfo.UserManageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseManagement.Modules.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resource/PageCurrDic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Background="#103399FF" CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="用户名："/>
+                    <TextBox Text="{Binding Surchmodel.Username}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="用户名称："/>
+                    <TextBox Text="{Binding Surchmodel.Fullname}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="启用状态："/>
+                    <ComboBox Template="{DynamicResource ComboBoxTemplate1}"
+                                  ItemsSource="{Binding diclist}" 
+                                  DisplayMemberPath="DicName"
+                                  SelectedItem="{Binding Currentdic}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="4" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="查询"
+                                Template="{StaticResource SurchButton}"
+                                Command="{Binding surch}"/>
+                    <Button Content="导出"
+                                Template="{StaticResource ExpButton}"
+                                Command="{Binding surch}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!--表头-->
+            <Border Background="#EEE" Margin="5" CornerRadius="10"/>
+            <Grid>
+                <UniformGrid Columns="4">
+                    <TextBlock Text="用户名" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="用户名称" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="启用状态" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="操作" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </UniformGrid>
+            </Grid>
+            
+            <!--表体 List-->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding UserList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Name="root">
+                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1"
+                                    Grid.ColumnSpan="2" SnapsToDevicePixels="True"/>
+                            <UniformGrid Columns="4">
+                                <TextBlock Text="{Binding USERNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding FULLNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding ISUSING}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Button Name="btEdit" Width="30" Height="30" Background="Transparent" Foreground="#800033FF"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe8cc;">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <TextBlock Name="txtEdit" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="txtEdit" Property="Foreground" Value="#0033FF"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Name="btReset" Width="30" Height="30" Background="Transparent" Foreground="#80FF0033"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe619;">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <TextBlock Name="txtReset" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="txtReset" Property="Foreground" Value="#FF0033"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </StackPanel>
+                            </UniformGrid>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</UserControl>

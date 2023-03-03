@@ -1,0 +1,83 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--选项卡关闭按钮样式-->
+    <ControlTemplate x:Key="tabclosebt" TargetType="Button">
+        <Border Background="Transparent" >
+            <Path Name="back" Data="M0 0 8 8M0 8 8 0" 
+                  Stroke="{TemplateBinding Foreground}" StrokeThickness="1" 
+                  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="back" Property="Stroke" Value="black"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <!--选项卡样式-->
+    <Style TargetType="TabItem">
+        <Setter Property="Header" Value="{Binding DataContext.PageTitle}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto" MaxWidth="30" MinWidth="10"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{TemplateBinding Header}" Margin="5" VerticalAlignment="Center"/>
+                        <Grid Grid.Column="1" Name="closegrid" Visibility="Collapsed">
+                            <Button  Name="btclose" Width="30" Visibility="Collapsed"
+                                Foreground="{TemplateBinding Foreground}" 
+                                Template="{StaticResource tabclosebt}"
+                                Command="{Binding DataContext.CloseCommand}"
+                                CommandParameter="{Binding DataContext.NavUri}"/>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding DataContext.IsCanClose}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="closegrid"/>
+                        </DataTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="btclose"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="btclose"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#3399FF"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="	#EEE"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--按钮用户名-->
+    <ControlTemplate x:Key="Userinfobt" TargetType="Button">
+        <TextBlock Text="{Binding CurrentUserName}" Padding="10" />
+    </ControlTemplate>
+    <!--右侧抽屉侧滑栏动画展开效果-->
+    <Storyboard x:Key="userinfoshow">
+        <DoubleAnimation Duration="0:0:0.2" To="0"
+                         Storyboard.TargetName="brouserinfo"
+                         Storyboard.TargetProperty="X"/>
+    </Storyboard>
+    <!--右侧抽屉侧滑栏动画关闭效果-->
+    <Storyboard x:Key="userinfoclose">
+        <DoubleAnimation Duration="0:0:0.1"
+                         Storyboard.TargetName="brouserinfo"
+                         Storyboard.TargetProperty="X"/>
+    </Storyboard>
+</ResourceDictionary>
