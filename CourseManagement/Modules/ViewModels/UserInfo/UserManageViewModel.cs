@@ -32,6 +32,15 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         public CommandBase surch { get; set; }
         /// <summary>
+        /// 定义启用禁用方法
+        /// </summary>
+        public CommandBase ChangeUsing { get; set; }
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        public CommandBase ResetPassword { get; set; }
+        
+        /// <summary>
         /// 定义字典值
         /// </summary>
         public List<DictionaryInfo> diclist { get; set; }
@@ -39,6 +48,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         //查询结果集合
         public ObservableCollection<SysUserModel> UserList { get; set; }
 
+        UserManagerAction action = new UserManagerAction();
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -60,23 +70,43 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
 
 
 
+            //启用/禁用事件
+            this.ChangeUsing = new CommandBase();
+            //执行通过委托调用方法
+            this.ChangeUsing.DoExecute = new Action<object>(ChangeUsingStateAction);
+            //判断是否执行逻辑
+            this.ChangeUsing.IsCanExecute = new Func<object, bool>((o) =>
+            {
+                return true;
+            });
+
             //查询按钮事件
             this.surch = new CommandBase();
             //执行通过委托调用方法
-            this.surch.DoExecute = new Action<object>(SurchUserList);
+            this.surch.DoExecute = new Action<object>(SurchUserListAction);
             //判断是否执行逻辑
             this.surch.IsCanExecute = new Func<object, bool>((o) =>
             {
                 return true;
             });
+
+            //重置密码事件
+            this.ResetPassword = new CommandBase();
+            //执行通过委托调用方法
+            this.ResetPassword.DoExecute = new Action<object>(ResetPasswordAction);
+            //判断是否执行逻辑
+            this.ResetPassword.IsCanExecute = new Func<object, bool>((o) =>
+            {
+                return true;
+            });
         }
 
-        public void SurchUserList(object o)
+        public void SurchUserListAction(object o)
         {
+            UserList.Clear();
             Surchmodel.IsUsing = Currentdic.DicId;
             string WhereStr = QueryParam.GetWhereString<UserInfoModelcs>(Surchmodel, true, true);
-            UserManagerAction action = new UserManagerAction();
-            List<SysUserModel> list = action.GetUserInfoList(WhereStr);
+            List<SysUserModel> list = action.GetUserInfoListAction(WhereStr);
             list.ForEach(p => UserList.Add(p));
         }
 
@@ -85,8 +115,35 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             diclist = new List<DictionaryInfo>();
             diclist.Add(new DictionaryInfo() { DicId = "", DicName = "全部" });
             diclist.Add(new DictionaryInfo() { DicId = "1", DicName = "启用" });
-            diclist.Add(new DictionaryInfo() { DicId = "2", DicName = "禁用" });
+            diclist.Add(new DictionaryInfo() { DicId = "0", DicName = "禁用" });
             Currentdic = diclist[1];
+        }
+
+        public void ChangeUsingStateAction(object o)
+        {
+            SysUserModel model = ((o as Button).Tag as SysUserModel);
+            if (action.ChangeUsingStateAction(model) >= 0)
+            {
+                string mess = string.Format(@"{0}用户成功！", model.ISUSING == "1" ? "禁用" : "启用");
+                MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                SurchUserListAction(null);
+            }
+            else {
+                MessageBox.Show("操作失败！", "系统消息", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public void ResetPasswordAction(object o)
+        {
+            string username = o.ToString();
+            if (action.ResetPasswordAction(username) >= 0)
+            {
+                string mess = string.Format(@"重置用户密码成功！");
+                MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("操作失败！", "系统消息", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

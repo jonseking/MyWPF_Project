@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CourseManagement.Modules.Views"
+             xmlns:converter="clr-namespace:CourseManagement.Converter"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
@@ -12,6 +13,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resource/PageCurrDic.xaml"/>
+                <ResourceDictionary>
+                    <converter:IsUsingConverter x:Key="usingconverter"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -67,7 +71,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <!--表头-->
-            <Border Background="#EEE" Margin="5" CornerRadius="10"/>
+            <Border Background="#EEE" Margin="5" CornerRadius="5"/>
             <Grid>
                 <UniformGrid Columns="4">
                     <TextBlock Text="用户名" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -87,7 +91,49 @@
                             <UniformGrid Columns="4">
                                 <TextBlock Text="{Binding USERNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 <TextBlock Text="{Binding FULLNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                <TextBlock Text="{Binding ISUSING}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <!--启用禁用-->
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Button Name="btusing" Width="30" Height="30" Background="Transparent" Foreground="#80009966"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe61a;" Visibility="{Binding ISUSING,Converter={StaticResource usingconverter},ConverterParameter=1}"
+                                            Tag="{Binding}"
+                                            Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <TextBlock Name="txtusing" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="txtusing" Property="Foreground" Value="#009966"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+
+                                    <Button Name="btunusing" Width="30" Height="30" Background="Transparent" Foreground="#80CC3300"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe61c;" Visibility="{Binding ISUSING,Converter={StaticResource usingconverter},ConverterParameter=0}"
+                                            Tag="{Binding}"
+                                            Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <TextBlock Name="txtunusing" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="txtunusing" Property="Foreground" Value="#CC3300"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </StackPanel>
+                                <!--操作按钮-->
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Button Name="btEdit" Width="30" Height="30" Background="Transparent" Foreground="#800033FF"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
@@ -107,7 +153,8 @@
                                     </Button>
                                     <Button Name="btReset" Width="30" Height="30" Background="Transparent" Foreground="#80FF0033"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
-                        Content="&#xe619;">
+                        Content="&#xe619;" Command="{Binding DataContext.ResetPassword,RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+                                            CommandParameter="{Binding USERNAME}">
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
                                                 <TextBlock Name="txtReset" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"

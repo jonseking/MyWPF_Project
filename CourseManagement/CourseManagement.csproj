@@ -131,6 +131,7 @@
     <Compile Include="Common\PassWordHelper.cs" />
     <Compile Include="Common\TabinfoHelper.cs" />
     <Compile Include="Common\VerificationCodeHelper.cs" />
+    <Compile Include="Converter\IsUsingConverter.cs" />
     <Compile Include="DataAccess\AccessOperation\LoginAction.cs" />
     <Compile Include="DataAccess\AccessOperation\UserManagerAction.cs" />
     <Compile Include="DataAccess\CommonMap.cs" />

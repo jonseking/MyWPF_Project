@@ -35,6 +35,7 @@ namespace CourseManagement.Modules.ViewModels.BaseInfo
             PageTitle = "首页";
             IsCanClose = false;
 
+            //动态化仪表盘
             Task.Factory.StartNew(new Action(async () => {
                 while (true)
                 {
