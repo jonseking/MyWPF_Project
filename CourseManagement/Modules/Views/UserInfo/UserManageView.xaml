@@ -120,9 +120,7 @@
                             <CheckBox IsChecked="{Binding DataContext.GridCheckModel.IsCheckAll,
                                 RelativeSource={RelativeSource 
                                 AncestorType=UserControl,Mode=FindAncestor}}">
-                                <i:Interaction.Triggers>
-                                    
-                                </i:Interaction.Triggers>
+
                             </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
