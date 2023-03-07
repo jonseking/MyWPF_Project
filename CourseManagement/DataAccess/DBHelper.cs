@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace CourseManagement.DataAccess
 {
+    using CourseManagement.Model;
+
     /**
      * 数据库访问帮助类，部分参照petapoco(http://www.toptensoftware.com/petapoco/)
      * */
@@ -985,6 +987,27 @@ namespace CourseManagement.DataAccess
                         page = Query<T>(_sqlPage, null).ToList<T>();
                 }
 
+                return page;
+            }
+
+            public IList<T> QueryList<T>(string sql, PaginationModel Pagemodel) where T : class
+            {
+                List<T> page = new List<T>();
+                BuilderPageSql(sql, Pagemodel.PageSize, Pagemodel.CurrentPage);
+                if (Pagemodel.PageSize == 0)
+                {
+                    page = Query<T>(_sqlPage, null).ToList<T>();
+                    Pagemodel.TotalPage = page.Count;
+                }
+                else
+                {
+                    int itemcount = ExecuteScalar<int>(_sqlCount, null);
+                    Pagemodel.TotalPage = itemcount% Pagemodel.PageSize==0? 
+                        itemcount/ Pagemodel.PageSize: itemcount / Pagemodel.PageSize+1;
+                    if (itemcount == 0)
+                        page = new List<T>();
+                        page = Query<T>(_sqlPage, null).ToList<T>();
+                }
                 return page;
             }
 

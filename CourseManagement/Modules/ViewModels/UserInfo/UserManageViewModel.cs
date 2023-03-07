@@ -11,7 +11,10 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Drawing.Printing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +31,10 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         public UserInfoModelcs Surchmodel { get; set; }
         /// <summary>
+        /// 定义分页条件
+        /// </summary>
+        public PaginationModel Pagemodel { get; set; }
+        /// <summary>
         /// 定义查询方法
         /// </summary>
         public CommandBase surch { get; set; }
@@ -39,7 +46,11 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// 重置密码
         /// </summary>
         public CommandBase ResetPassword { get; set; }
-        
+        /// <summary>
+        /// 分页管理
+        /// </summary>
+        public CommandBase PageSearchCommand { get; set; }
+
         /// <summary>
         /// 定义字典值
         /// </summary>
@@ -64,21 +75,14 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             IsCanClose = true;
             //初始化查询条件
             Surchmodel = new UserInfoModelcs();
+            Pagemodel = new PaginationModel();
             UserList = new ObservableCollection<SysUserModel>();
             //页面绑定事件
             Bindinfo();
+            //页面默认加载时查询
+            SurchUserListAction(null);
 
 
-
-            //启用/禁用事件
-            this.ChangeUsing = new CommandBase();
-            //执行通过委托调用方法
-            this.ChangeUsing.DoExecute = new Action<object>(ChangeUsingStateAction);
-            //判断是否执行逻辑
-            this.ChangeUsing.IsCanExecute = new Func<object, bool>((o) =>
-            {
-                return true;
-            });
 
             //查询按钮事件
             this.surch = new CommandBase();
@@ -86,6 +90,16 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             this.surch.DoExecute = new Action<object>(SurchUserListAction);
             //判断是否执行逻辑
             this.surch.IsCanExecute = new Func<object, bool>((o) =>
+            {
+                return true;
+            });
+
+            //启用/禁用事件
+            this.ChangeUsing = new CommandBase();
+            //执行通过委托调用方法
+            this.ChangeUsing.DoExecute = new Action<object>(ChangeUsingStateAction);
+            //判断是否执行逻辑
+            this.ChangeUsing.IsCanExecute = new Func<object, bool>((o) =>
             {
                 return true;
             });
@@ -99,6 +113,16 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             {
                 return true;
             });
+
+            //分页事件
+            this.PageSearchCommand = new CommandBase();
+            //执行通过委托调用方法
+            this.PageSearchCommand.DoExecute = new Action<object>(PageSearchAction);
+            //判断是否执行逻辑
+            this.PageSearchCommand.IsCanExecute = new Func<object, bool>((o) =>
+            {
+                return true;
+            });
         }
 
         public void SurchUserListAction(object o)
@@ -106,19 +130,22 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             UserList.Clear();
             Surchmodel.IsUsing = Currentdic.DicId;
             string WhereStr = QueryParam.GetWhereString<UserInfoModelcs>(Surchmodel, true, true);
-            List<SysUserModel> list = action.GetUserInfoListAction(WhereStr);
+            List<SysUserModel> list = action.GetUserInfoListAction(WhereStr,Pagemodel);
             list.ForEach(p => UserList.Add(p));
         }
-
         public void Bindinfo()
         {
             diclist = new List<DictionaryInfo>();
             diclist.Add(new DictionaryInfo() { DicId = "", DicName = "全部" });
             diclist.Add(new DictionaryInfo() { DicId = "1", DicName = "启用" });
             diclist.Add(new DictionaryInfo() { DicId = "0", DicName = "禁用" });
-            Currentdic = diclist[1];
+            //设置默认选择项
+            Currentdic = diclist[0];
         }
-
+        /// <summary>
+        /// 用户启/禁用
+        /// </summary>
+        /// <param name="o"></param>
         public void ChangeUsingStateAction(object o)
         {
             SysUserModel model = ((o as Button).Tag as SysUserModel);
@@ -132,6 +159,10 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                 MessageBox.Show("操作失败！", "系统消息", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        /// <summary>
+        /// 重置用户密码
+        /// </summary>
+        /// <param name="o"></param>
         public void ResetPasswordAction(object o)
         {
             string username = o.ToString();
@@ -145,5 +176,14 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                 MessageBox.Show("操作失败！", "系统消息", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        /// <summary>
+        /// 分页查询命令
+        /// </summary>
+        private void PageSearchAction(object o)
+        {
+            SurchUserListAction(null);
+        }
+
+
     }
 }

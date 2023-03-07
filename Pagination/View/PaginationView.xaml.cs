@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pagination.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,11 +19,14 @@ namespace Pagination.View
     /// <summary>
     /// Pagination.xaml 的交互逻辑
     /// </summary>
-    public partial class Pagination : UserControl
+    public partial class PaginationView : UserControl
     {
-        public Pagination()
+        public PaginationViewModel PaginationViewModel { get; private set; }
+        public PaginationView()
         {
             InitializeComponent();
+            PaginationViewModel = new PaginationViewModel();
+            this.DataContext = PaginationViewModel;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CourseManagement.Modules.ViewModels   ;
+using CourseManagement.Modules.ViewModels.UserInfo;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,13 @@ namespace CourseManagement.Modules.Views.UserInfo
         public UserManageView()
         {
             InitializeComponent();
+        }
+
+        private void griduserinfo_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            int currpage = PageControl.CurrentPage;
+            int pagesize = PageControl.PageSize;
+            e.Row.Header = (currpage-1)*pagesize+e.Row.GetIndex() + 1;
         }
     }
 }

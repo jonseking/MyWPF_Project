@@ -83,6 +83,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Demo\ItemsControlList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Views\BaseInfo\DefaulView.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
@@ -132,6 +136,7 @@
     <Compile Include="Common\TabinfoHelper.cs" />
     <Compile Include="Common\VerificationCodeHelper.cs" />
     <Compile Include="Converter\IsUsingConverter.cs" />
+    <Compile Include="Converter\NumberConverter.cs" />
     <Compile Include="DataAccess\AccessOperation\LoginAction.cs" />
     <Compile Include="DataAccess\AccessOperation\UserManagerAction.cs" />
     <Compile Include="DataAccess\CommonMap.cs" />
@@ -140,10 +145,14 @@
     <Compile Include="DataAccess\DBHelper.cs" />
     <Compile Include="DataAccess\DBHelperFactory.cs" />
     <Compile Include="DataAccess\DBType.cs" />
+    <Compile Include="Demo\ItemsControlList.xaml.cs">
+      <DependentUpon>ItemsControlList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\EntityModel\DictionaryInfo.cs" />
     <Compile Include="Model\EntityModel\SysMenuModel.cs" />
     <Compile Include="Model\MenuItemModel.cs" />
     <Compile Include="Model\EntityModel\SysUserModel.cs" />
+    <Compile Include="Model\PaginationModel.cs" />
     <Compile Include="Model\SurchModel\LoginModelcs.cs" />
     <Compile Include="Model\SurchModel\UserInfoModelcs.cs" />
     <Compile Include="Modules\ViewModels\BaseInfo\DefaulViewModel.cs" />

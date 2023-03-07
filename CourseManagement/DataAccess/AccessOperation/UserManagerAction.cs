@@ -1,5 +1,6 @@
 ﻿using CourseManagement.Common;
 using CourseManagement.DataAccess.PORM.Data;
+using CourseManagement.Model;
 using CourseManagement.Model.EntityModel;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// </summary>
         /// <param name="WhereStr"></param>
         /// <returns></returns>
-        public List<SysUserModel> GetUserInfoListAction(string WhereStr)
+        public List<SysUserModel> GetUserInfoListAction(string WhereStr, PaginationModel Pagemodel)
         {
             List<SysUserModel> list = new List<SysUserModel>();
             using (DBHelper db = new DBHelper())
@@ -25,7 +26,7 @@ namespace CourseManagement.DataAccess.AccessOperation
                 string sql = string.Format(@"SELECT * FROM SYS_USER WHERE 1=1 {0} ", WhereStr);
                 try
                 {
-                    list = db.QueryList<SysUserModel>(sql).ToList();
+                    list = db.QueryList<SysUserModel>(sql, Pagemodel).ToList();
                 }
                 catch (Exception e)
                 {

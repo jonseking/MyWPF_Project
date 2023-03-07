@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pagination.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Pagination
         public MainWindow()
         {
             InitializeComponent();
+            PaginationViewModel pagerViewModel = this.PagingControl.PaginationViewModel;
         }
     }
 }
