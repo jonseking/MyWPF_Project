@@ -35,6 +35,10 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         public PaginationModel Pagemodel { get; set; }
         /// <summary>
+        /// 定义全选
+        /// </summary>
+        public DataGridCheckModel GridCheckModel { get; set; }
+        /// <summary>
         /// 定义查询方法
         /// </summary>
         public CommandBase surch { get; set; }
@@ -50,6 +54,10 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// 分页管理
         /// </summary>
         public CommandBase PageSearchCommand { get; set; }
+        /// <summary>
+        /// 列表全选
+        /// </summary>
+        public CommandBase CheckAll { get; set; }
 
         /// <summary>
         /// 定义字典值
@@ -76,6 +84,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             //初始化查询条件
             Surchmodel = new UserInfoModelcs();
             Pagemodel = new PaginationModel();
+            GridCheckModel= new DataGridCheckModel();   
             UserList = new ObservableCollection<SysUserModel>();
             //页面绑定事件
             Bindinfo();
@@ -120,6 +129,16 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             this.PageSearchCommand.DoExecute = new Action<object>(PageSearchAction);
             //判断是否执行逻辑
             this.PageSearchCommand.IsCanExecute = new Func<object, bool>((o) =>
+            {
+                return true;
+            });
+
+            //列表全选事件
+            this.CheckAll = new CommandBase();
+            //执行通过委托调用方法
+            this.CheckAll.DoExecute = new Action<object>(CheckAllAction);
+            //判断是否执行逻辑
+            this.CheckAll.IsCanExecute = new Func<object, bool>((o) =>
             {
                 return true;
             });
@@ -183,7 +202,22 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         {
             SurchUserListAction(null);
         }
-
-
+        /// <summary>
+        /// 列表全选
+        /// </summary>
+        /// <param name="o"></param>
+        private void CheckAllAction(object o)
+        {
+            string str = (o as Button).Content.ToString();
+            if (str == "全选")
+            {
+                GridCheckModel.CheckTitle = "取消";
+                GridCheckModel.IsCheckAll = "True";
+            }
+            else {
+                GridCheckModel.CheckTitle = "全选";
+                GridCheckModel.IsCheckAll = "False";
+            }
+        }
     }
 }

@@ -8,6 +8,8 @@
              xmlns:pageconverter="clr-namespace:MyControls;assembly=MyControls"
              xmlns:prism="http://prismlibrary.com/" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -79,9 +81,19 @@
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="序号" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBlock Text="选择" Foreground="White" FontWeight="Bold" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <UniformGrid Columns="4"  Grid.Column="2">
+                <TextBlock Text="序号" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Button Grid.Column="1" Foreground="White" FontWeight="Bold" Width="50" Height="20" FontSize="14"
+                        Content="{Binding GridCheckModel.CheckTitle}"
+                        Command="{Binding CheckAll}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <TextBlock Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <UniformGrid Columns="4"  Grid.Column="2">
                     <TextBlock Text="用户名" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBlock Text="用户名称" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBlock Text="启用状态" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -102,7 +114,19 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridCheckBoxColumn Width="50"/>
+                <DataGridTemplateColumn Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding DataContext.GridCheckModel.IsCheckAll,
+                                RelativeSource={RelativeSource 
+                                AncestorType=UserControl,Mode=FindAncestor}}">
+                                <i:Interaction.Triggers>
+                                    
+                                </i:Interaction.Triggers>
+                            </CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

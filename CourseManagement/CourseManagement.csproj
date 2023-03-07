@@ -148,6 +148,7 @@
     <Compile Include="Demo\ItemsControlList.xaml.cs">
       <DependentUpon>ItemsControlList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\DataGridCheckModel.cs" />
     <Compile Include="Model\EntityModel\DictionaryInfo.cs" />
     <Compile Include="Model\EntityModel\SysMenuModel.cs" />
     <Compile Include="Model\MenuItemModel.cs" />
