@@ -4,6 +4,7 @@ using CourseManagement.Model;
 using CourseManagement.Model.EntityModel;
 using CourseManagement.Model.SurchModel;
 using CourseManagement.Modules.Views.UserInfo;
+using GalaSoft.MvvmLight.Command;
 using PORM.Data;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -41,7 +42,11 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// <summary>
         /// 定义查询方法
         /// </summary>
-        public CommandBase surch { get; set; }
+        public CommandBase Surch { get; set; }
+        /// <summary>
+        /// 定义删除方法
+        /// </summary>
+        public CommandBase Del { get; set; }
         /// <summary>
         /// 定义启用禁用方法
         /// </summary>
@@ -58,6 +63,10 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// 列表全选
         /// </summary>
         public CommandBase CheckAll { get; set; }
+        /// <summary>
+        /// 选择框点击
+        /// </summary>
+        public CommandBase CheckCommand { get; set; }
 
         /// <summary>
         /// 定义字典值
@@ -65,7 +74,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         public List<DictionaryInfo> diclist { get; set; }
         public DictionaryInfo Currentdic { get; set; }
         //查询结果集合
-        public ObservableCollection<SysUserModel> UserList { get; set; }
+        public ObservableCollection<SysUserListModel> UserList { get; set; }
 
         UserManagerAction action = new UserManagerAction();
         /// <summary>
@@ -84,8 +93,9 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             //初始化查询条件
             Surchmodel = new UserInfoModelcs();
             Pagemodel = new PaginationModel();
-            GridCheckModel= new DataGridCheckModel();   
-            UserList = new ObservableCollection<SysUserModel>();
+            GridCheckModel= new DataGridCheckModel();
+
+            UserList = new ObservableCollection<SysUserListModel>();
             //页面绑定事件
             Bindinfo();
             //页面默认加载时查询
@@ -94,11 +104,21 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
 
 
             //查询按钮事件
-            this.surch = new CommandBase();
+            this.Surch = new CommandBase();
             //执行通过委托调用方法
-            this.surch.DoExecute = new Action<object>(SurchUserListAction);
+            this.Surch.DoExecute = new Action<object>(SurchUserListAction);
             //判断是否执行逻辑
-            this.surch.IsCanExecute = new Func<object, bool>((o) =>
+            this.Surch.IsCanExecute = new Func<object, bool>((o) =>
+            {
+                return true;
+            });
+
+            //查询删除事件
+            this.Del = new CommandBase();
+            //执行通过委托调用方法
+            this.Del.DoExecute = new Action<object>(DelAction);
+            //判断是否执行逻辑
+            this.Del.IsCanExecute = new Func<object, bool>((o) =>
             {
                 return true;
             });
@@ -142,6 +162,16 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             {
                 return true;
             });
+
+            //选择框点击事件
+            this.CheckCommand = new CommandBase();
+            //执行通过委托调用方法
+            this.CheckCommand.DoExecute = new Action<object>(CheckAction);
+            //判断是否执行逻辑
+            this.CheckCommand.IsCanExecute = new Func<object, bool>((o) =>
+            {
+                return true;
+            }); 
         }
 
         public void SurchUserListAction(object o)
@@ -150,7 +180,8 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             Surchmodel.IsUsing = Currentdic.DicId;
             string WhereStr = QueryParam.GetWhereString<UserInfoModelcs>(Surchmodel, true, true);
             List<SysUserModel> list = action.GetUserInfoListAction(WhereStr,Pagemodel);
-            list.ForEach(p => UserList.Add(p));
+            list.ForEach(p => UserList.Add(new SysUserListModel() {SysUser=p}));
+            CheckAllCorrection();
         }
         public void Bindinfo()
         {
@@ -167,7 +198,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// <param name="o"></param>
         public void ChangeUsingStateAction(object o)
         {
-            SysUserModel model = ((o as Button).Tag as SysUserModel);
+            SysUserModel model = ((o as Button).Tag as SysUserListModel).SysUser;
             if (action.ChangeUsingStateAction(model) >= 0)
             {
                 string mess = string.Format(@"{0}用户成功！", model.ISUSING == "1" ? "禁用" : "启用");
@@ -184,8 +215,8 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// <param name="o"></param>
         public void ResetPasswordAction(object o)
         {
-            string username = o.ToString();
-            if (action.ResetPasswordAction(username) >= 0)
+            string userid = o.ToString();
+            if (action.ResetPasswordAction(userid) > 0)
             {
                 string mess = string.Format(@"重置用户密码成功！");
                 MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -212,11 +243,88 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             if (str == "全选")
             {
                 GridCheckModel.CheckTitle = "取消";
-                GridCheckModel.IsCheckAll = "True";
+                GridCheckModel.IsCheckAll = true;
             }
             else {
                 GridCheckModel.CheckTitle = "全选";
-                GridCheckModel.IsCheckAll = "False";
+                GridCheckModel.IsCheckAll = false;
+            }
+            foreach (var item in UserList)
+            {
+                item.IsChecked = GridCheckModel.IsCheckAll;
+            }
+        }
+        /// <summary>
+        /// 选择框选择
+        /// </summary>
+        /// <param name="o"></param>
+        private void CheckAction(object o)
+        {
+            if (o != null)
+            {
+                string id= o.ToString();    
+                SysUserListModel model= UserList.Where(p=>p.SysUser.USERID==id).FirstOrDefault();
+                model.IsChecked=!model.IsChecked;
+                CheckAllCorrection();
+            }
+        }
+        /// <summary>
+        /// 删除事件
+        /// </summary>
+        /// <param name="o"></param>
+        private void DelAction(object o) { 
+            List<SysUserListModel> list =UserList.Where(p=>p.IsChecked==true).ToList();
+            if (CheckValidate())
+            {
+                string userids = "";
+                foreach (var item in list)
+                {
+                    userids += "'" + item.SysUser.USERID + "',";
+                }
+                userids = userids.Remove(userids.LastIndexOf(","));
+                int result=action.DelUserInfo(userids);
+                if (result > 0)
+                {
+                    MessageBox.Show("删除用户成功", "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SurchUserListAction(null);
+                }
+                else {
+                    MessageBox.Show("删除用户失败", "系统消息", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else {
+                MessageBox.Show("您尚未选择数据", "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+        }
+        /// <summary>
+        /// 提交前校验选项数目
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckValidate() {
+            if (UserList.Count(p => p.IsChecked == true) > 0)
+            {
+                return true;
+            }
+            else 
+            { 
+            return false;   
+            }
+        }
+        /// <summary>
+        /// 更新全选状态
+        /// </summary>
+        /// <returns></returns>
+        private void CheckAllCorrection()
+        {
+            if (UserList.Count(p => p.IsChecked) == UserList.Count && UserList.Count>0)
+            {
+                GridCheckModel.CheckTitle = "取消";
+                GridCheckModel.IsCheckAll = true;
+            }
+            else {
+                GridCheckModel.CheckTitle = "全选";
+                GridCheckModel.IsCheckAll = false;
             }
         }
     }

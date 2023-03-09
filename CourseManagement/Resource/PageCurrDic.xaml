@@ -211,7 +211,7 @@
     </Style>
     <!--查询按钮 -->
     <ControlTemplate x:Key="SurchButton" TargetType="Button">
-        <Border Name="back" Background="#3399FF" Margin="10" CornerRadius="2">
+        <Border Name="back" Background="#953399FF" Margin="10" CornerRadius="2">
             <ContentControl Content="{TemplateBinding Content}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
@@ -219,13 +219,27 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
-                <Setter TargetName="back" Property="Background" Value="#903399FF"/>
+                <Setter TargetName="back" Property="Background" Value="#3399FF"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--删除按钮 -->
+    <ControlTemplate x:Key="DelButton" TargetType="Button">
+        <Border Name="back" Background="#95FF3333" Margin="10" CornerRadius="2">
+            <ContentControl Content="{TemplateBinding Content}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="back" Property="Background" Value="#FF3333"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <!--导出按钮 -->
     <ControlTemplate x:Key="ExpButton" TargetType="Button">
-        <Border Name="back" Background="#9999FF" Margin="10" CornerRadius="2">
+        <Border Name="back" Background="#959999FF" Margin="10" CornerRadius="2">
             <ContentControl Content="{TemplateBinding Content}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
@@ -233,7 +247,7 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
-                <Setter TargetName="back" Property="Background" Value="#909999FF"/>
+                <Setter TargetName="back" Property="Background" Value="#9999FF"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

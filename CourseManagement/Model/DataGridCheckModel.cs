@@ -9,9 +9,9 @@ namespace CourseManagement.Model
 {
     public class DataGridCheckModel:NotifyBase
     {
-        private string _isCheckAll = "False";
+        private bool _isCheckAll = false;
 
-        public string IsCheckAll
+        public bool IsCheckAll
         {
             get { return _isCheckAll; }
             set { _isCheckAll = value;this.DoNotify(); }

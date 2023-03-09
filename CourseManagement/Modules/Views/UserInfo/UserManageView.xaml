@@ -67,10 +67,13 @@
                             HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="查询"
                                 Template="{StaticResource SurchButton}"
-                                Command="{Binding surch}"/>
+                                Command="{Binding Surch}"/>
+                    <Button Content="删除"
+                                Template="{StaticResource DelButton}"
+                                Command="{Binding Del}" Cursor="Hand"/>
                     <Button Content="导出"
                                 Template="{StaticResource ExpButton}"
-                                Command="{Binding surch}"/>
+                                Command="{Binding Surch}"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -117,10 +120,14 @@
                 <DataGridTemplateColumn Width="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding DataContext.GridCheckModel.IsCheckAll,
-                                RelativeSource={RelativeSource 
-                                AncestorType=UserControl,Mode=FindAncestor}}">
-
+                            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                <c:Interaction.Triggers>
+                                    <c:EventTrigger EventName="Click">
+                                        <Custom:EventToCommand Command="{Binding DataContext.CheckCommand,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                                               CommandParameter="{Binding SysUser.USERID}">
+                                        </Custom:EventToCommand>
+                                    </c:EventTrigger>
+                                </c:Interaction.Triggers>
                             </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -128,14 +135,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding USERNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding SysUser.USERNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding FULLNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding SysUser.FULLNAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -145,7 +152,7 @@
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button Name="btusing" Width="30" Height="30" Background="Transparent" Foreground="#80009966"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
-                        Content="&#xe61a;" Visibility="{Binding ISUSING,Converter={StaticResource usingconverter},ConverterParameter=1}"
+                        Content="&#xe61a;" Visibility="{Binding SysUser.ISUSING,Converter={StaticResource usingconverter},ConverterParameter=1}"
                                             Tag="{Binding}"
                                             Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
@@ -165,7 +172,7 @@
 
                                 <Button Name="btunusing" Width="30" Height="30" Background="Transparent" Foreground="#80CC3300"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
-                        Content="&#xe61c;" Visibility="{Binding ISUSING,Converter={StaticResource usingconverter},ConverterParameter=0}"
+                        Content="&#xe61c;" Visibility="{Binding SysUser.ISUSING,Converter={StaticResource usingconverter},ConverterParameter=0}"
                                             Tag="{Binding}"
                                             Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
@@ -190,7 +197,23 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Button Name="btEdit" Width="30" Height="30" Background="Transparent" Foreground="#800033FF"
+                                <Button Name="btLook" Width="30" Height="30" Background="Transparent" Foreground="#800033FF"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe620;">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock Name="txtLook" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="txtLook" Property="Foreground" Value="#0033FF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button Name="btEdit" Width="30" Height="30" Background="Transparent" Foreground="#8033CC00"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
                         Content="&#xe8cc;">
                                     <Button.Template>
@@ -200,7 +223,7 @@
                        FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter TargetName="txtEdit" Property="Foreground" Value="#0033FF"/>
+                                                    <Setter TargetName="txtEdit" Property="Foreground" Value="#33CC00"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -209,7 +232,7 @@
                                 <Button Name="btReset" Width="30" Height="30" Background="Transparent" Foreground="#80FF0033"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
                         Content="&#xe619;" Command="{Binding DataContext.ResetPassword,RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
-                                            CommandParameter="{Binding USERNAME}">
+                                            CommandParameter="{Binding SysUser.USERID}">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <TextBlock Name="txtReset" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"

@@ -42,7 +42,7 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// <param name="model"></param>
         /// <returns></returns>
         public int ChangeUsingStateAction(SysUserModel model) {
-            string sql = string.Format(@"UPDATE SYS_USER SET ISUSING='{1}' WHERE USERNAME='{0}'",model.USERNAME,model.ISUSING=="0"?"1":"0");
+            string sql = string.Format(@"UPDATE SYS_USER SET ISUSING='{1}' WHERE USERID='{0}'",model.USERID,model.ISUSING=="0"?"1":"0");
             using (DBHelper db = new DBHelper()) {
                 return db.ExecuteNonQuery(sql); 
             }
@@ -53,10 +53,23 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public int ResetPasswordAction(string username)
+        public int ResetPasswordAction(string userid)
         {
-            string newpassword = BaseFunction.EncryptMd5(username);
-            string sql = string.Format(@"UPDATE SYS_USER SET PASSWORD='{1}' WHERE USERNAME='{0}'", username, newpassword);
+            string newpassword = BaseFunction.EncryptMd5("999999");
+            string sql = string.Format(@"UPDATE SYS_USER SET PASSWORD='{1}' WHERE USERID='{0}'", userid, newpassword);
+            using (DBHelper db = new DBHelper())
+            {
+                return db.ExecuteNonQuery(sql);
+            }
+        }
+        /// <summary>
+        /// 用户信息删除（后续增加同时删除权限等信息）
+        /// </summary>
+        /// <param name="userids"></param>
+        /// <returns></returns>
+        public int DelUserInfo(string userids)
+        {
+            string sql = string.Format(@"DELETE FROM SYS_USER WHERE USERID IN({0})", userids);
             using (DBHelper db = new DBHelper())
             {
                 return db.ExecuteNonQuery(sql);
