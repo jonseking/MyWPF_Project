@@ -12,16 +12,16 @@ namespace CourseManagement.DataAccess.AccessOperation
 {
     public class LoginAction
     {
-        public int Login(string Username, string Password,out SysUserModel UserIfo)
+        public int Login(string Username, string Password,out SYS_USER UserIfo)
         {
             int result = 0;
-            UserIfo=new SysUserModel();    
+            UserIfo=new SYS_USER();    
             using (DBHelper db=new DBHelper())
             {
                 String Sql = string.Format(@"SELECT * FROM SYS_USER WHERE USERNAME='{0}' AND PASSWORD='{1}'",Username, BaseFunction.EncryptMd5(Password));
                 try
                 {
-                    UserIfo = db.QueryModel<SysUserModel>(Sql);
+                    UserIfo = db.QueryModel<SYS_USER>(Sql);
                 }
                 catch (Exception e)
                 {

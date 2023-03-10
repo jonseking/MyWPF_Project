@@ -4,24 +4,28 @@ using CourseManagement.Model;
 using CourseManagement.Model.EntityModel;
 using CourseManagement.Model.SurchModel;
 using CourseManagement.Modules.Views.UserInfo;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 using PORM.Data;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Unity;
+using IDialogService = Prism.Services.Dialogs.IDialogService;
 
 namespace CourseManagement.Modules.ViewModels.UserInfo
 {
@@ -56,6 +60,14 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         public CommandBase ResetPassword { get; set; }
         /// <summary>
+        /// 查看详情
+        /// </summary>
+        public ICommand ShowDetail{ get; set; }
+        /// <summary>
+        /// 编辑详情
+        /// </summary>
+        public ICommand EditDetail { get; set; }
+        /// <summary>
         /// 分页管理
         /// </summary>
         public CommandBase PageSearchCommand { get; set; }
@@ -82,8 +94,8 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         /// <param name="unityContainer"></param>
         /// <param name="regionManager"></param>
-        public UserManageViewModel(IUnityContainer unityContainer, IRegionManager regionManager)
-            : base(unityContainer, regionManager)   
+        public UserManageViewModel(IUnityContainer unityContainer, IRegionManager regionManager,IDialogService dialogService)
+            : base(unityContainer, regionManager, dialogService)   
         {
             //设置Tab显示名称
             string uri = "UserManageView";
@@ -143,6 +155,12 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                 return true;
             });
 
+            //查看详情
+            this.ShowDetail = new DelegateCommand<object>(ShowDetailAction);
+            //编辑详情
+            this.EditDetail = new DelegateCommand<object>(EditDetailAction);
+
+
             //分页事件
             this.PageSearchCommand = new CommandBase();
             //执行通过委托调用方法
@@ -179,7 +197,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             UserList.Clear();
             Surchmodel.IsUsing = Currentdic.DicId;
             string WhereStr = QueryParam.GetWhereString<UserInfoModelcs>(Surchmodel, true, true);
-            List<SysUserModel> list = action.GetUserInfoListAction(WhereStr,Pagemodel);
+            List<SYS_USER> list = action.GetUserInfoListAction(WhereStr,Pagemodel);
             list.ForEach(p => UserList.Add(new SysUserListModel() {SysUser=p}));
             CheckAllCorrection();
         }
@@ -198,7 +216,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// <param name="o"></param>
         public void ChangeUsingStateAction(object o)
         {
-            SysUserModel model = ((o as Button).Tag as SysUserListModel).SysUser;
+            SYS_USER model = ((o as Button).Tag as SysUserListModel).SysUser;
             if (action.ChangeUsingStateAction(model) >= 0)
             {
                 string mess = string.Format(@"{0}用户成功！", model.ISUSING == "1" ? "禁用" : "启用");
@@ -225,6 +243,46 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             {
                 MessageBox.Show("操作失败！", "系统消息", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        /// <summary>
+        /// 查看详情页面
+        /// </summary>
+        /// <param name="o"></param>
+        private void ShowDetailAction(object o)
+        { 
+            DialogParameters dialogParameters = new DialogParameters();
+            //SYS_USER model = UserList.Where(p => p.SysUser.USERID == o.ToString()).FirstOrDefault().SysUser;
+            dialogParameters.Add("id", o.ToString());
+            dialogParameters.Add("type", "show");
+            DetailAction(dialogParameters);
+        }
+        /// <summary>
+        /// 编辑详情页面
+        /// </summary>
+        /// <param name="o"></param>
+        private void EditDetailAction(object o)
+        {
+            DialogParameters dialogParameters = new DialogParameters();
+            //SYS_USER model = UserList.Where(p => p.SysUser.USERID == o.ToString()).FirstOrDefault().SysUser;
+            dialogParameters.Add("id", o.ToString());
+            dialogParameters.Add("type", "edit");
+            DetailAction(dialogParameters);
+        }
+        /// <summary>
+        /// 弹出明细窗口
+        /// </summary>
+        private void DetailAction(DialogParameters dialogParameters)
+        {
+            _dialogService.ShowDialog("UserInfoDetailView", dialogParameters, result =>
+            {
+                if (result.Result == ButtonResult.OK)
+                {
+                    string mess = string.Format(@"{0}用户信息成功！", dialogParameters.GetValue<String>("type") == "edit" ? "更新" : "新增");
+                    MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SurchUserListAction(null);
+                }
+            });
         }
         /// <summary>
         /// 分页查询命令

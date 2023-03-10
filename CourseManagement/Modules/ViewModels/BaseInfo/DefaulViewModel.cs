@@ -3,6 +3,7 @@ using CourseManagement.Model.EntityModel;
 using Microsoft.Win32.SafeHandles;
 using Prism.Commands;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,8 +30,8 @@ namespace CourseManagement.Modules.ViewModels.BaseInfo
             set { _DashboardVar = value;this.DoNotify(); }
         }
         Random random= new Random();
-        public DefaulViewModel(IUnityContainer unityContainer, IRegionManager regionManager)
-            : base(unityContainer, regionManager)
+        public DefaulViewModel(IUnityContainer unityContainer, IRegionManager regionManager,IDialogService dialogService)
+            : base(unityContainer, regionManager,dialogService)
         {
             PageTitle = "首页";
             IsCanClose = false;

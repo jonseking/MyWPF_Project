@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace CourseManagement.DataAccess
 {
     using CourseManagement.Model;
+    using global::PORM.Data;
 
     /**
      * 数据库访问帮助类，部分参照petapoco(http://www.toptensoftware.com/petapoco/)
@@ -1290,6 +1291,7 @@ namespace CourseManagement.DataAccess
                     {
                         continue;
                     }
+                    var s = pi.GetCustomAttributes();
                     customAttribute = pi.GetCustomAttributes(typeof(ColumnAttribute), false);
                     if (customAttribute.Count() == 1 && (customAttribute[0] as ColumnAttribute).PrimaryKey)
                         condition.AppendFormat(" and {0}=@{0}", pi.Name);

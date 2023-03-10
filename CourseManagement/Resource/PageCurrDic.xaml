@@ -209,8 +209,9 @@
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
-    <!--查询按钮 -->
-    <ControlTemplate x:Key="SurchButton" TargetType="Button">
+    
+    <!--蓝色按钮 -->
+    <ControlTemplate x:Key="BlueButton" TargetType="Button">
         <Border Name="back" Background="#953399FF" Margin="10" CornerRadius="2">
             <ContentControl Content="{TemplateBinding Content}"
                             VerticalAlignment="Center"
@@ -223,8 +224,8 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <!--删除按钮 -->
-    <ControlTemplate x:Key="DelButton" TargetType="Button">
+    <!--红色按钮 -->
+    <ControlTemplate x:Key="RedButton" TargetType="Button">
         <Border Name="back" Background="#95FF3333" Margin="10" CornerRadius="2">
             <ContentControl Content="{TemplateBinding Content}"
                             VerticalAlignment="Center"
@@ -237,8 +238,8 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <!--导出按钮 -->
-    <ControlTemplate x:Key="ExpButton" TargetType="Button">
+    <!--紫色按钮 -->
+    <ControlTemplate x:Key="PurpleButton" TargetType="Button">
         <Border Name="back" Background="#959999FF" Margin="10" CornerRadius="2">
             <ContentControl Content="{TemplateBinding Content}"
                             VerticalAlignment="Center"
@@ -251,7 +252,22 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    
+    <!--绿色按钮 -->
+    <ControlTemplate x:Key="GreenButton" TargetType="Button">
+        <Border Name="back" Background="#95009966" Margin="10" CornerRadius="2">
+            <ContentControl Content="{TemplateBinding Content}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="back" Property="Background" Value="#009966"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+
     <!--DataGrid样式-->
     <Style TargetType="DataGrid">
         <!--网格线颜色-->
@@ -321,7 +337,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
     <!--单元格样式触发-->
     <Style TargetType="DataGridCell">
         <Setter Property="Template">
@@ -339,4 +354,33 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <!--表单标题列样式-->
+    <Style x:Key="FormLableStyle" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <!--表单文本框样式-->
+    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+    <ControlTemplate x:Key="FormTBoxStyle" TargetType="{x:Type TextBoxBase}">
+        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                BorderBrush="{TemplateBinding BorderBrush}" 
+                BorderThickness="{TemplateBinding BorderThickness}" 
+                SnapsToDevicePixels="True" CornerRadius="5">
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="true">
+                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 </ResourceDictionary>

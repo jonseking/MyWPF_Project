@@ -1,6 +1,7 @@
 ﻿using CourseManagement.Model.EntityModel;
 using Prism.Commands;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,11 +44,13 @@ namespace CourseManagement.Common
 
         IUnityContainer _unityContaine;
         IRegionManager _regionManager;
+         public IDialogService _dialogService;
 
-        public TabinfoHelper(IUnityContainer unityContainer, IRegionManager regionManager)
+        public TabinfoHelper(IUnityContainer unityContainer, IRegionManager regionManager,IDialogService dialogService)
         {
             _unityContaine = unityContainer;
             _regionManager = regionManager;
+            _dialogService = dialogService; 
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

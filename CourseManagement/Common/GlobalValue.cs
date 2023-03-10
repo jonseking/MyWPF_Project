@@ -9,7 +9,7 @@ namespace CourseManagement.Common
 {
     public class GlobalValue
     {
-        public static SysUserModel UserInfo{get;set;}
+        public static SYS_USER UserInfo {get;set;}
         public static IList<SysMenuModel> ListMenuInfo { get; set; }
     }
 }

@@ -18,9 +18,9 @@ namespace CourseManagement.Model
 			set { _isChecked = value; this.DoNotify(); }
 		}
 
-		private SysUserModel _sysUser;
+		private SYS_USER _sysUser;
 
-		public SysUserModel SysUser
+		public SYS_USER SysUser
         {
 			get { return _sysUser; }
 			set { _sysUser = value; this.DoNotify(); }

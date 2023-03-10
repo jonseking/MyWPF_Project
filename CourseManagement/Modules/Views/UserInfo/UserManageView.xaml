@@ -48,7 +48,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Text="用户名："/>
+                    <TextBlock Text="账号："/>
                     <TextBox Text="{Binding Surchmodel.Username}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -66,13 +66,13 @@
                             Orientation="Horizontal" 
                             HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="查询"
-                                Template="{StaticResource SurchButton}"
+                                Template="{StaticResource BlueButton}"
                                 Command="{Binding Surch}"/>
                     <Button Content="删除"
-                                Template="{StaticResource DelButton}"
+                                Template="{StaticResource RedButton}"
                                 Command="{Binding Del}" Cursor="Hand"/>
                     <Button Content="导出"
-                                Template="{StaticResource ExpButton}"
+                                Template="{StaticResource PurpleButton}"
                                 Command="{Binding Surch}"/>
                 </StackPanel>
             </Grid>
@@ -97,7 +97,7 @@
                     </Button.Template>
                 </Button>
                 <UniformGrid Columns="4"  Grid.Column="2">
-                    <TextBlock Text="用户名" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="账号" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBlock Text="用户名称" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBlock Text="启用状态" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBlock Text="操作" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -199,7 +199,8 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button Name="btLook" Width="30" Height="30" Background="Transparent" Foreground="#800033FF"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
-                        Content="&#xe620;">
+                        Content="&#xe620;" Command="{Binding DataContext.ShowDetail,RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+                                            CommandParameter="{Binding SysUser.USERID}">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <TextBlock Name="txtLook" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
@@ -215,7 +216,8 @@
                                 </Button>
                                 <Button Name="btEdit" Width="30" Height="30" Background="Transparent" Foreground="#8033CC00"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
-                        Content="&#xe8cc;">
+                        Content="&#xe8cc;" Command="{Binding DataContext.EditDetail,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                        CommandParameter="{Binding SysUser.USERID}">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <TextBlock Name="txtEdit" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"

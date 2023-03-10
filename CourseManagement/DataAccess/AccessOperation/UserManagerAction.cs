@@ -17,16 +17,16 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// </summary>
         /// <param name="WhereStr"></param>
         /// <returns></returns>
-        public List<SysUserModel> GetUserInfoListAction(string WhereStr, PaginationModel Pagemodel)
+        public List<SYS_USER> GetUserInfoListAction(string WhereStr, PaginationModel Pagemodel)
         {
-            List<SysUserModel> list = new List<SysUserModel>();
+            List<SYS_USER> list = new List<SYS_USER>();
             using (DBHelper db = new DBHelper())
             {
                 //暂时先读取全部菜单
                 string sql = string.Format(@"SELECT * FROM SYS_USER WHERE 1=1 {0} ", WhereStr);
                 try
                 {
-                    list = db.QueryList<SysUserModel>(sql, Pagemodel).ToList();
+                    list = db.QueryList<SYS_USER>(sql, Pagemodel).ToList();
                 }
                 catch (Exception e)
                 {
@@ -41,7 +41,7 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public int ChangeUsingStateAction(SysUserModel model) {
+        public int ChangeUsingStateAction(SYS_USER model) {
             string sql = string.Format(@"UPDATE SYS_USER SET ISUSING='{1}' WHERE USERID='{0}'",model.USERID,model.ISUSING=="0"?"1":"0");
             using (DBHelper db = new DBHelper()) {
                 return db.ExecuteNonQuery(sql); 
@@ -62,6 +62,15 @@ namespace CourseManagement.DataAccess.AccessOperation
                 return db.ExecuteNonQuery(sql);
             }
         }
+
+        public SYS_USER GetUserInfoByID(string id)
+        {
+            using (DBHelper db=new DBHelper())
+            {
+                string sql = string.Format(@"SELECT * FROM SYS_USER WHERE USERID='{0}'", id);
+                return db.QueryModel<SYS_USER>(sql);
+            }
+        }
         /// <summary>
         /// 用户信息删除（后续增加同时删除权限等信息）
         /// </summary>
@@ -73,6 +82,16 @@ namespace CourseManagement.DataAccess.AccessOperation
             using (DBHelper db = new DBHelper())
             {
                 return db.ExecuteNonQuery(sql);
+            }
+        }
+        /// <summary>
+        /// 编辑用户信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public int EditUserInfo(SYS_USER model) {
+            using (DBHelper db = new DBHelper()) {
+                return db.Update<SYS_USER>(model);
             }
         }
     }

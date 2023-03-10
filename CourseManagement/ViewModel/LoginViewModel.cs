@@ -101,7 +101,7 @@ namespace CourseManagement.ViewModel
             if (CheckLoginInfo() == "")
             {
                 LoginAction loginaction = new LoginAction();
-                SysUserModel user;
+                SYS_USER user;
 
                 //启用线程任务
                 Task.Run(new Action( () =>

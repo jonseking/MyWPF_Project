@@ -28,8 +28,11 @@ namespace CourseManagement.Modules
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.Register<LeftTreeView>();
+
             containerRegistry.RegisterForNavigation<UserManageView>();
             containerRegistry.RegisterForNavigation<DefaulView>();
+
+            containerRegistry.RegisterDialog<UserInfoDetailView>(); 
         }
     }
 }
