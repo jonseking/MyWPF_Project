@@ -12,7 +12,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resource/PageCurrDic.xaml"/>
-                <ResourceDictionary Source="/Resource/Dictionary1.xaml"/>
+                <ResourceDictionary Source="/Resource/ButtonCurrDic.xaml"/> 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

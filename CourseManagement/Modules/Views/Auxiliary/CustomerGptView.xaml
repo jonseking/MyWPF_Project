@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="CourseManagement.Modules.Views.Auxiliary.CustomerGptView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseManagement.Modules.Views.Auxiliary"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="800" Cursor="">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resource/ButtonCurrDic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid  Margin="10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="480"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <Border CornerRadius="5" BorderThickness="2" BorderBrush="#3399FF" Background="#103399FF">
+            <!--<RichTextBox IsReadOnly="True" Background="Transparent"
+                         local:CustomerGptView.RichText="{Binding CustomerGptModel.RichText}">
+                
+            </RichTextBox>-->
+                <ItemsControl ItemsSource="{Binding MessageInfoList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="{Binding Alig}">
+                                <UniformGrid Columns="2">
+                                    <StackPanel HorizontalAlignment="Left" 
+                                            Visibility="{Binding LeftShow}">
+                                        <Grid Margin="10">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.RowSpan="2" VerticalAlignment="Top" 
+                                               Source="{Binding LeftImg}" />
+                                            <TextBlock Grid.Column="1" Foreground="#999999"
+                           Text="{Binding LeftBrief}"></TextBlock>
+                                            <Border Grid.Row="1" Grid.Column="1" MaxWidth="400"
+                        Background="#33FF99" CornerRadius="0,10,10,10" BorderThickness="1">
+                                                <TextBlock  Padding="5" TextWrapping="Wrap"
+                        Text="{Binding LeftMessage}"></TextBlock>
+                                            </Border>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Right" 
+                                            Visibility="{Binding RightShow}">
+                                        <Grid Margin="10">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#999999" HorizontalAlignment="Right"
+                           Text="{Binding RightBrief}"></TextBlock>
+                                            <Border Grid.Row="1" MaxWidth="400"
+                        Background="#CCCCCC" CornerRadius="10,0,10,10" BorderThickness="1">
+                                                <TextBlock  Padding="5" TextWrapping="Wrap"
+                        Text="{Binding RightMessage}"></TextBlock>
+                                            </Border>
+                                            <Image Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top" 
+                                               Source="{Binding RightImg}" />
+                                        </Grid>
+                                    </StackPanel>
+                                </UniformGrid>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+        </ScrollViewer>
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Height="80" Margin="0,0,5,0"  
+                     TextWrapping="Wrap"  AcceptsReturn="True" 
+                     Text="{Binding CustomerGptModel.SendText}"/>
+            <Button Grid.Column="1" Content="发送" Foreground="White" 
+                   Template="{StaticResource BlueButton}"
+                   Command="{Binding Send}" />
+        </Grid>
+    </Grid>
+</UserControl>

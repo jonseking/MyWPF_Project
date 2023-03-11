@@ -17,6 +17,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resource/PageCurrDic.xaml"/>
+                <ResourceDictionary Source="/Resource/ButtonCurrDic.xaml"/>
                 <ResourceDictionary>
                     <converter:IsUsingConverter x:Key="usingconverter"/>
                     <converter:NumberConverter x:Key="numberconverter"/>

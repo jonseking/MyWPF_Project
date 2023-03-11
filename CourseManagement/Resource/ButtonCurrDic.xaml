@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--蓝色按钮 -->
+    <ControlTemplate x:Key="BlueButton" TargetType="Button">
+        <Border Name="back" Background="#953399FF" Margin="10" CornerRadius="2">
+            <ContentControl Content="{TemplateBinding Content}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="back" Property="Background" Value="#3399FF"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--红色按钮 -->
+    <ControlTemplate x:Key="RedButton" TargetType="Button">
+        <Border Name="back" Background="#95FF3333" Margin="10" CornerRadius="2">
+            <ContentControl Content="{TemplateBinding Content}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="back" Property="Background" Value="#FF3333"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--紫色按钮 -->
+    <ControlTemplate x:Key="PurpleButton" TargetType="Button">
+        <Border Name="back" Background="#959999FF" Margin="10" CornerRadius="2">
+            <ContentControl Content="{TemplateBinding Content}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="back" Property="Background" Value="#9999FF"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--绿色按钮 -->
+    <ControlTemplate x:Key="GreenButton" TargetType="Button">
+        <Border Name="back" Background="#95009966" Margin="10" CornerRadius="2">
+            <ContentControl Content="{TemplateBinding Content}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="back" Property="Background" Value="#009966"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+</ResourceDictionary>

@@ -1,4 +1,5 @@
 ﻿using CourseManagement.Modules.Views;
+using CourseManagement.Modules.Views.Auxiliary;
 using CourseManagement.Modules.Views.BaseInfo;
 using CourseManagement.Modules.Views.UserInfo;
 using CourseManagement.View;
@@ -30,6 +31,7 @@ namespace CourseManagement.Modules
             containerRegistry.Register<LeftTreeView>();
 
             containerRegistry.RegisterForNavigation<UserManageView>();
+            containerRegistry.RegisterForNavigation<CustomerGptView>();
             containerRegistry.RegisterForNavigation<DefaulView>();
 
             containerRegistry.RegisterDialog<UserInfoDetailView>(); 
