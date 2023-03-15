@@ -24,5 +24,17 @@ namespace CourseManagement.Demo
         {
             InitializeComponent();
         }
+        public void testFun() {
+            Test test = new Test();
+            //订阅事件
+            test.a += Test_a;
+            test.DiaoYong();
+        }
+        //事件处理程序
+        private void Test_a(object o, EventArgs e)
+        {
+            //方法体
+            throw new NotImplementedException();
+        }
     }
 }
