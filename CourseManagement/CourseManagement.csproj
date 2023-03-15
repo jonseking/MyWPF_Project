@@ -272,5 +272,8 @@
     <Resource Include="Assets\images\people.png" />
     <Resource Include="Assets\images\robot.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\DLL\OpenAI.GPT3.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
