@@ -219,7 +219,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             SYS_USER model = ((o as Button).Tag as SysUserListModel).SysUser;
             if (action.ChangeUsingStateAction(model) >= 0)
             {
-                string mess = string.Format(@"{0}用户成功！", model.ISUSING == "1" ? "禁用" : "启用");
+                string mess = string.Format(@"{0}用户成功！", model.USERSTATE == "1" ? "禁用" : "启用");
                 MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
                 SurchUserListAction(null);
             }
@@ -320,7 +320,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         {
             if (o != null)
             {
-                string id= o.ToString();    
+                int id=Convert.ToInt32(o);    
                 SysUserListModel model= UserList.Where(p=>p.SysUser.USERID==id).FirstOrDefault();
                 model.IsChecked=!model.IsChecked;
                 CheckAllCorrection();

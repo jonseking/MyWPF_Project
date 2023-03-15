@@ -201,7 +201,7 @@ namespace CourseManagement.ViewModel
             return this.ErrMessage;
         }
 
-        public IList<SysMenuModel> GetMenusByUserID(string UsetID)
+        public IList<SYS_MENU> GetMenusByUserID(int UsetID)
         {
             LoginAction loginaction = new LoginAction();
             return loginaction.GetMenusByUserID(UsetID);

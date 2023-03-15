@@ -153,7 +153,7 @@
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button Name="btusing" Width="30" Height="30" Background="Transparent" Foreground="#80009966"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
-                        Content="&#xe61a;" Visibility="{Binding SysUser.ISUSING,Converter={StaticResource usingconverter},ConverterParameter=1}"
+                        Content="&#xe61a;" Visibility="{Binding SysUser.USERSTATE,Converter={StaticResource usingconverter},ConverterParameter=1}"
                                             Tag="{Binding}"
                                             Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
@@ -173,7 +173,7 @@
 
                                 <Button Name="btunusing" Width="30" Height="30" Background="Transparent" Foreground="#80CC3300"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
-                        Content="&#xe61c;" Visibility="{Binding SysUser.ISUSING,Converter={StaticResource usingconverter},ConverterParameter=0}"
+                        Content="&#xe61c;" Visibility="{Binding SysUser.USERSTATE,Converter={StaticResource usingconverter},ConverterParameter=0}"
                                             Tag="{Binding}"
                                             Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">

@@ -19,7 +19,7 @@ namespace CourseManagement.Modules.ViewModels
         public List<MenuItemModel> TreeMenuItems { get; set; } = new List<MenuItemModel>();
 
         //数据库读取出来的无树状结构的菜单列表
-        private IList<SysMenuModel> Menus = GlobalValue.ListMenuInfo;
+        private IList<SYS_MENU> Menus = GlobalValue.ListMenuInfo;
 
         public IRegionManager _regionManager;
         public LeftTreeViewModel(IRegionManager RegionManager)
@@ -41,9 +41,9 @@ namespace CourseManagement.Modules.ViewModels
         /// </summary>
         /// <param name="TreeMenuItems">树状菜单列表</param>
         /// <param name="FatherId"></param>
-        private void FillMenus(List<MenuItemModel> TreeMenuItems, string FatherId)
+        private void FillMenus(List<MenuItemModel> TreeMenuItems, string ParentId)
         {
-            var menus = Menus.Where(m => m.FATHERID == FatherId).OrderBy(o => o.MENUINDEX);
+            var menus = Menus.Where(m => m.PARENTID == ParentId).OrderBy(o => o.MENUINDEX);
 
             if (menus.Count() > 0)
             {
@@ -52,13 +52,13 @@ namespace CourseManagement.Modules.ViewModels
                     MenuItemModel mm = new MenuItemModel(_regionManager)
                     {
                         MENUNAME = item.MENUNAME,
-                        MENUICON = ((char)int.Parse(item.MENUICON, NumberStyles.HexNumber)).ToString(),
+                        MENUICON = item.MENUICON==null? ((char)int.Parse("e621", NumberStyles.HexNumber)).ToString() : ((char)int.Parse(item.MENUICON, NumberStyles.HexNumber)).ToString(),
                         MENUVIEW = item.MENUVIEW
                     };
 
                     TreeMenuItems.Add(mm);
 
-                    FillMenus(mm.Childs = new List<MenuItemModel>(), item.MENUID);
+                    FillMenus(mm.Childs = new List<MenuItemModel>(), item.MID);
                 }
             }
             

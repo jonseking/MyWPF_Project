@@ -18,7 +18,7 @@ namespace CourseManagement.DataAccess.AccessOperation
             UserIfo=new SYS_USER();    
             using (DBHelper db=new DBHelper())
             {
-                String Sql = string.Format(@"SELECT * FROM SYS_USER WHERE USERNAME='{0}' AND PASSWORD='{1}'",Username, BaseFunction.EncryptMd5(Password));
+                String Sql = string.Format(@"SELECT * FROM SYS_USER WHERE USERNAME='{0}' AND USERPWD='{1}'", Username, BaseFunction.EncryptMd5(Password));
                 try
                 {
                     UserIfo = db.QueryModel<SYS_USER>(Sql);
@@ -37,16 +37,16 @@ namespace CourseManagement.DataAccess.AccessOperation
                 }
                 else 
                 {
-                    if (UserIfo.ISUSING == "0")
+                    if (UserIfo.USERSTATE == "0")
                     {
                         //当前用户已被禁用
                         result = -2;
                     }
-                    else if (UserIfo.ISONLIN == 1)
-                    {
-                        //当前用户已在其它设备登录
-                        result = -3;
-                    }
+                    //else if (UserIfo.ISONLIN == 1)
+                    //{
+                    //    //当前用户已在其它设备登录
+                    //    result = -3;
+                    //}
                     else
                     {
                         result = 1;
@@ -56,16 +56,16 @@ namespace CourseManagement.DataAccess.AccessOperation
             return result;
         }
 
-        public IList<SysMenuModel> GetMenusByUserID(string UsetID)
+        public IList<SYS_MENU> GetMenusByUserID(int UsetID)
         {
-            IList<SysMenuModel> listmenus= new List<SysMenuModel>();
+            IList<SYS_MENU> listmenus= new List<SYS_MENU>();
             using (DBHelper db = new DBHelper())
             {
                 //暂时先读取全部菜单
                 string sql = string.Format(@"SELECT * FROM SYS_MENU ");
                 try
                 {
-                    listmenus = db.QueryList<SysMenuModel>(sql);
+                    listmenus = db.QueryList<SYS_MENU>(sql);
                 }
                 catch (Exception e)
                 {

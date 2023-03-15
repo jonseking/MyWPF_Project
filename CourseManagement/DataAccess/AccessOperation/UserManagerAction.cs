@@ -42,7 +42,7 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// <param name="model"></param>
         /// <returns></returns>
         public int ChangeUsingStateAction(SYS_USER model) {
-            string sql = string.Format(@"UPDATE SYS_USER SET ISUSING='{1}' WHERE USERID='{0}'",model.USERID,model.ISUSING=="0"?"1":"0");
+            string sql = string.Format(@"UPDATE SYS_USER SET ISUSING='{1}' WHERE USERID='{0}'",model.USERID,model.USERSTATE=="0"?"1":"0");
             using (DBHelper db = new DBHelper()) {
                 return db.ExecuteNonQuery(sql); 
             }

@@ -180,7 +180,7 @@
     <Compile Include="Model\DataGridCheckModel.cs" />
     <Compile Include="Model\EntityModel\BASE_CUSTOMERGPT.cs" />
     <Compile Include="Model\EntityModel\DictionaryInfo.cs" />
-    <Compile Include="Model\EntityModel\SysMenuModel.cs" />
+    <Compile Include="Model\EntityModel\SYS_MENU.cs" />
     <Compile Include="Model\MenuItemModel.cs" />
     <Compile Include="Model\EntityModel\SYS_USER.cs" />
     <Compile Include="Model\MessageInfoModel.cs" />
