@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace CourseManagement.Model.SurchModel
 {
-    public class MenuIfoModelcs : NotifyBase
+    public class RoleIfoModelcs : NotifyBase
     {
-        private string _menuname;
+        private string _rolename;
 
         [SerachCol(OpSerach = OperaSerach.like, OrdinalIgnoreCase = true)]
-        public string Menuname
+        public string RoleName
         {
-            get { return _menuname; }
+            get { return _rolename; }
             set
             {
-                _menuname = value;
+                _rolename = value;
                 this.DoNotify();
             }
         }

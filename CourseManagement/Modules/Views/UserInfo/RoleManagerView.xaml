@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="CourseManagement.Modules.Views.UserInfo.RoleManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseManagement.Modules.Views.UserInfo"
+             xmlns:converter="clr-namespace:CourseManagement.Converter"
+             xmlns:pageconverter="clr-namespace:MyControls;assembly=MyControls"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
+             prism:ViewModelLocator.AutoWireViewModel="True"            
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resource/PageCurrDic.xaml"/>
+                <ResourceDictionary Source="/Resource/ButtonCurrDic.xaml"/>
+                <ResourceDictionary>
+                    <converter:IsUsingConverter x:Key="usingconverter"/>
+                    <converter:NumberConverter x:Key="numberconverter"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="45"/>
+        </Grid.RowDefinitions>
+        <!--查询条件-->
+        <Border Background="#103399FF" CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="角色名称："/>
+                    <TextBox Text="{Binding Surchmodel.RoleName}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="启用状态："/>
+                    <ComboBox Template="{DynamicResource ComboBoxTemplate1}"
+                                  ItemsSource="{Binding diclist}" 
+                                  DisplayMemberPath="DicName"
+                                  SelectedItem="{Binding Currentdic}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="4" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="查询"
+                                Template="{StaticResource BlueButton}"
+                                Command="{Binding Surch}"/>
+                    <Button Content="新增"
+                                Template="{StaticResource GreenButton}"
+                                Command="{Binding Add}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <!--表头-->
+        <Border Grid.Row="1" Background="#3399FF" Margin="5,0,0,5" CornerRadius="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="序号" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <UniformGrid Columns="4"  Grid.Column="2">
+                    <TextBlock Text="角色名称" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="角色描述" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="启用状态" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="操作" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </UniformGrid>
+            </Grid>
+        </Border>
+        <!--表体-->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden">
+            <DataGrid x:Name="gridinfo"  ColumnWidth="*"
+                  ItemsSource="{Binding RoleList}" 
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False" AlternationCount="2" 
+                  LoadingRow="gridinfo_LoadingRow" HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=Header}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                                <TextBlock Text="{Binding SysRole.ROLENAME}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                                <TextBlock Text="{Binding SysRole.REMARK}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Button Name="btusing" Width="30" Height="30" Background="Transparent" Foreground="#80009966"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe61a;" Visibility="{Binding SysRole.ISUSING,Converter={StaticResource usingconverter},ConverterParameter=1}"
+                                            Tag="{Binding}"
+                                            Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock Name="txtusing" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="txtusing" Property="Foreground" Value="#009966"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                                <Button Name="btunusing" Width="30" Height="30" Background="Transparent" Foreground="#80CC3300"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe61c;" Visibility="{Binding SysRole.ISUSING,Converter={StaticResource usingconverter},ConverterParameter=0}"
+                                            Tag="{Binding}"
+                                            Command="{Binding DataContext.ChangeUsing,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock Name="txtunusing" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="txtunusing" Property="Foreground" Value="#CC3300"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Button Name="btLook" Width="30" Height="30" Background="Transparent" Foreground="#800033FF"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe620;" Command="{Binding DataContext.ShowDetail,RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+                                            CommandParameter="{Binding SysRole.ROLEID}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock Name="txtLook" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="txtLook" Property="Foreground" Value="#0033FF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button Name="btEdit" Width="30" Height="30" Background="Transparent" Foreground="#8033CC00"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe8cc;" Command="{Binding DataContext.EditDetail,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                        CommandParameter="{Binding SysRole.ROLEID}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock Name="txtEdit" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="txtEdit" Property="Foreground" Value="#33CC00"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        </ScrollViewer>
+        <!--分页控件-->
+        <Border Grid.Row="3">
+            <pageconverter:Pagination x:Name="PageControl"  
+                                          TotalPage="{Binding Path=Pagemodel.TotalPage,Mode=TwoWay}" 
+                                          PageSize="{Binding Path=Pagemodel.PageSize,Mode=TwoWay}" 
+                                          CurrentPage="{Binding Path=Pagemodel.CurrentPage,Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger  EventName="PageChanged">
+                        <i:InvokeCommandAction  Command="{Binding Path=PageSearchCommand, Mode=TwoWay}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </pageconverter:Pagination>
+        </Border>
+    </Grid>
+</UserControl>

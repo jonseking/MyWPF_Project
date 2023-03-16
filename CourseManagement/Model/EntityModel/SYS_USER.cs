@@ -51,5 +51,9 @@ namespace CourseManagement.Model.EntityModel
         
         [ViewAttribute(ViewName = "是否在线")]
         public int ISONLINE { get; set; }
+
+        [ViewAttribute(ViewName = "角色ID")]
+        public int RoleID { get; set; }
+        
     }
 }

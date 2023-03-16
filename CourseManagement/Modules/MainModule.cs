@@ -33,11 +33,13 @@ namespace CourseManagement.Modules
 
             containerRegistry.RegisterForNavigation<UserManageView>();
             containerRegistry.RegisterForNavigation<MenuManagerView>();
+            containerRegistry.RegisterForNavigation<RoleManagerView>();
             containerRegistry.RegisterForNavigation<CustomerGptView>();
             containerRegistry.RegisterForNavigation<DefaulView>();
 
             containerRegistry.RegisterDialog<UserInfoDetailView>();
             containerRegistry.RegisterDialog<MenuInfoDetailView>();
+            containerRegistry.RegisterDialog<RoleInfoDetailView>();
         }
     }
 }
