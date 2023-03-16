@@ -48,5 +48,8 @@ namespace CourseManagement.Model.EntityModel
 
         [ViewAttribute(ViewName = "用户记住密码")]
         public string USERREALPWD { get; set; }
+        
+        [ViewAttribute(ViewName = "是否在线")]
+        public int ISONLINE { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿  <UserControl x:Class="CourseManagement.Modules.Views.LeftTreeView"
+﻿<UserControl x:Class="CourseManagement.Modules.Views.LeftTreeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -27,9 +27,9 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            
-            
-            <Style TargetType="TreeViewItem">
+
+
+        <Style TargetType="TreeViewItem">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="IsExpanded" Value="{Binding IsExpanded,Mode=TwoWay}"/>
                 <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}"/>
@@ -75,7 +75,7 @@
                                               IsChecked="{Binding IsExpanded,RelativeSource={RelativeSource TemplatedParent}}"
                                               Template="{StaticResource ArrowButtonTemplate}"/>
                                 <!--</Border>-->
-                                    <ItemsPresenter x:Name="ItemHost" Grid.Row="1" Grid.ColumnSpan="2"  Margin="18,0,0,0"/>
+                                <ItemsPresenter x:Name="ItemHost" Grid.Row="1" Grid.ColumnSpan="2"  Margin="18,0,0,0"/>
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsExpanded" Value="False">

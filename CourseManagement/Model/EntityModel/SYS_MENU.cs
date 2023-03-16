@@ -13,7 +13,7 @@ namespace CourseManagement.Model.EntityModel
     {
         [ColumnAttribute(PrimaryKey = true)]
         [ViewAttribute(ViewName = "主键ID")]
-        public string MID { get; set; }
+        public int MID { get; set; }
 
         [ViewAttribute(ViewName = "菜单名称")]
         public string MENUNAME { get; set; }
@@ -27,7 +27,7 @@ namespace CourseManagement.Model.EntityModel
         public int MENUINDEX { get; set; }
 
         [ViewAttribute(ViewName = "父级菜单")]
-        public string PARENTID { get; set; }
+        public int PARENTID { get; set; }
 
         [ViewAttribute(ViewName = "权限ID")]
         public string AUTHID { get; set; }

@@ -93,11 +93,13 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <!--左侧菜单-->
-                    <StackPanel HorizontalAlignment="Left" >
-                        <ContentControl prism:RegionManager.RegionName="LeftMenuTreeRegion"/>
-                        <!--<test:LeftTreeView/>-->
-                    </StackPanel>
-                    <!--右侧信息展示-->
+                    <ScrollViewer>
+                        <StackPanel HorizontalAlignment="Left" >
+                            <ContentControl prism:RegionManager.RegionName="LeftMenuTreeRegion"/>
+                            <!--<test:LeftTreeView/>-->
+                        </StackPanel>
+                     </ScrollViewer>
+                            <!--右侧信息展示-->
                     <StackPanel Grid.Column="1">
                         <TabControl prism:RegionManager.RegionName="MainRegionManager" BorderThickness="0,1,0,0">
 

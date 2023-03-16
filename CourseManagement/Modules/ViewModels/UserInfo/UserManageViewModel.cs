@@ -195,7 +195,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         public void SurchUserListAction(object o)
         {
             UserList.Clear();
-            Surchmodel.IsUsing = Currentdic.DicId;
+            Surchmodel.UserState = Currentdic.DicId;
             string WhereStr = QueryParam.GetWhereString<UserInfoModelcs>(Surchmodel, true, true);
             List<SYS_USER> list = action.GetUserInfoListAction(WhereStr,Pagemodel);
             list.ForEach(p => UserList.Add(new SysUserListModel() {SysUser=p}));

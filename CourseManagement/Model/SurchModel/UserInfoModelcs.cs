@@ -36,14 +36,14 @@ namespace CourseManagement.Model.SurchModel
             }
         }
 
-        private string _IsUsing;
+        private string _userstate;
         [SerachCol(OpSerach = OperaSerach.等于, OrdinalIgnoreCase = true)]
-        public string IsUsing
+        public string UserState
         {
-            get { return _IsUsing; }
+            get { return _userstate; }
             set
             {
-                _IsUsing = value;
+                _userstate = value;
                 this.DoNotify();
             }
         }

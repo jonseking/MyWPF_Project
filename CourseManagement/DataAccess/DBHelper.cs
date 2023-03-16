@@ -990,7 +990,13 @@ namespace CourseManagement.DataAccess
 
                 return page;
             }
-
+            /// <summary>
+            /// 新定义
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="sql"></param>
+            /// <param name="Pagemodel"></param>
+            /// <returns></returns>
             public IList<T> QueryList<T>(string sql, PaginationModel Pagemodel) where T : class
             {
                 List<T> page = new List<T>();

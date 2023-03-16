@@ -24,7 +24,6 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

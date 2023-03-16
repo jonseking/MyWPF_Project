@@ -12,6 +12,13 @@ namespace CourseManagement.DataAccess.AccessOperation
 {
     public class LoginAction
     {
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="Username"></param>
+        /// <param name="Password"></param>
+        /// <param name="UserIfo"></param>
+        /// <returns></returns>
         public int Login(string Username, string Password,out SYS_USER UserIfo)
         {
             int result = 0;
@@ -42,11 +49,11 @@ namespace CourseManagement.DataAccess.AccessOperation
                         //当前用户已被禁用
                         result = -2;
                     }
-                    //else if (UserIfo.ISONLIN == 1)
-                    //{
-                    //    //当前用户已在其它设备登录
-                    //    result = -3;
-                    //}
+                    else if (UserIfo.ISONLINE == 1)
+                    {
+                        //当前用户已在其它设备登录
+                        result = -3;
+                    }
                     else
                     {
                         result = 1;
@@ -56,6 +63,11 @@ namespace CourseManagement.DataAccess.AccessOperation
             return result;
         }
 
+        /// <summary>
+        /// 获取用户菜单
+        /// </summary>
+        /// <param name="UsetID"></param>
+        /// <returns></returns>
         public IList<SYS_MENU> GetMenusByUserID(int UsetID)
         {
             IList<SYS_MENU> listmenus= new List<SYS_MENU>();
@@ -73,6 +85,15 @@ namespace CourseManagement.DataAccess.AccessOperation
                 }
             }
             return listmenus;
+        }
+
+        //修改用户登录信息
+        public int LoginInfoChange(SYS_USER user)
+        {
+            using (DBHelper db = new DBHelper())
+            {
+                return db.Update<SYS_USER>(user);
+            }
         }
     }
 }

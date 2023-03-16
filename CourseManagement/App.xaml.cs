@@ -1,4 +1,7 @@
-﻿using CourseManagement.Modules;
+﻿using CourseManagement.Common;
+using CourseManagement.DataAccess.AccessOperation;
+using CourseManagement.Model.EntityModel;
+using CourseManagement.Modules;
 using CourseManagement.View;
 using CourseManagement.ViewModel;
 using Prism.Ioc;
@@ -38,6 +41,20 @@ namespace CourseManagement
         protected override Window CreateShell()
         {
             return Container.Resolve<MainView>();
+        }
+        //程序退出
+        protected override void OnExit(ExitEventArgs e)
+        {
+            if (GlobalValue.UserInfo != null)
+            {
+                //修改登录信息
+                SYS_USER info = new SYS_USER();
+                info.USERID = GlobalValue.UserInfo.USERID;
+                info.ISONLINE = 0;
+                LoginAction action = new LoginAction();
+                action.LoginInfoChange(info);
+            }
+            base.OnExit(e);
         }
 
         protected override void InitializeShell(Window shell)

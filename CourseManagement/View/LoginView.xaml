@@ -44,13 +44,14 @@
                     Command="{Binding closeapp}"
                     CommandParameter="{Binding ElementName=LoginWin}"/>
             <!--页面主体-->
-            <Grid Grid.Row="1" FocusManager.FocusedElement="{Binding ElementName=TbUsername}">
+            <Grid Grid.Row="1" FocusManager.FocusedElement="{Binding ElementName=TbUsername}" Cursor="">
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <TextBox Name="TbUsername" Style="{DynamicResource UsernameStyle}" Text="{Binding Loginmodel.Username}"
                          Grid.Row="0" FontSize="11" Foreground="#555">
@@ -90,7 +91,12 @@
                         FontWeight="Bold" Template="{StaticResource LoginButton}" 
                         Command="{Binding login}"
                         CommandParameter="{Binding ElementName=LoginWin}"></Button>
-                <TextBlock Grid.Row="4" Text="{Binding ErrMessage}" 
+                <StackPanel Grid.Row="4" Orientation="Horizontal" >
+                    <Label Content="记住密码:" VerticalAlignment="Center"/>
+                    <CheckBox VerticalAlignment="Center"
+                              IsChecked="{Binding IsRember}"/>
+                </StackPanel>
+                <TextBlock Grid.Row="5" Text="{Binding ErrMessage}" 
                            VerticalAlignment="Center" HorizontalAlignment="Center"
                            Foreground="Red" FontSize="15"></TextBlock>
             </Grid>

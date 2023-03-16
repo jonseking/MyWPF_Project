@@ -22,7 +22,6 @@ namespace CourseManagement.DataAccess.AccessOperation
             List<SYS_USER> list = new List<SYS_USER>();
             using (DBHelper db = new DBHelper())
             {
-                //暂时先读取全部菜单
                 string sql = string.Format(@"SELECT * FROM SYS_USER WHERE 1=1 {0} ", WhereStr);
                 try
                 {
@@ -42,7 +41,7 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// <param name="model"></param>
         /// <returns></returns>
         public int ChangeUsingStateAction(SYS_USER model) {
-            string sql = string.Format(@"UPDATE SYS_USER SET ISUSING='{1}' WHERE USERID='{0}'",model.USERID,model.USERSTATE=="0"?"1":"0");
+            string sql = string.Format(@"UPDATE SYS_USER SET USERSTATE='{1}' WHERE USERID='{0}'",model.USERID,model.USERSTATE=="0"?"1":"0");
             using (DBHelper db = new DBHelper()) {
                 return db.ExecuteNonQuery(sql); 
             }

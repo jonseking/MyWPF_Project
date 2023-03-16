@@ -137,6 +137,13 @@ namespace CourseManagement.ViewModel
                     }
                     else
                     {
+                        //修改登录信息
+                        SYS_USER info=new SYS_USER();
+                        info.USERID= user.USERID;
+                        info.ISONLINE = 1;
+                        info.LASTLOGINTIME=DateTime.Now;
+                        info.LOGINIP =BaseFunction.GetLocalIp();
+                        loginaction.LoginInfoChange(info);
                         //给全局变量赋值（用户信息）
                         GlobalValue.UserInfo = user;
                         //给全局变量赋值（菜单列表）

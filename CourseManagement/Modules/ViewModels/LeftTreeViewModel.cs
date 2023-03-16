@@ -32,7 +32,7 @@ namespace CourseManagement.Modules.ViewModels
                 ////此处需根据用户角色进入不同的默认页面
                 _regionManager.RequestNavigate("MainRegionManager", "DefaulView");
                 //填充右侧菜单
-                FillMenus(TreeMenuItems, "0");
+                FillMenus(TreeMenuItems,0);
             }
         }
 
@@ -41,7 +41,7 @@ namespace CourseManagement.Modules.ViewModels
         /// </summary>
         /// <param name="TreeMenuItems">树状菜单列表</param>
         /// <param name="FatherId"></param>
-        private void FillMenus(List<MenuItemModel> TreeMenuItems, string ParentId)
+        private void FillMenus(List<MenuItemModel> TreeMenuItems, int ParentId)
         {
             var menus = Menus.Where(m => m.PARENTID == ParentId).OrderBy(o => o.MENUINDEX);
 
