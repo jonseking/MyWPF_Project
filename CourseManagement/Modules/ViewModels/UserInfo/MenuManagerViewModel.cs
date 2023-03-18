@@ -32,7 +32,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// <summary>
         /// 显示子菜单
         /// </summary>
-        public CommandBase ShowChild { get; set; }
+        public ICommand ShowChild { get; set; }
 
         /// <summary>
         /// 编辑详情
@@ -61,16 +61,6 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             //页面默认加载时查询
             SurchMenuListAction(null);
 
-            //显示子项事件
-            this.ShowChild = new CommandBase();
-            //执行通过委托调用方法
-            this.ShowChild.DoExecute = new Action<object>(ShowChildAction);
-            //判断是否执行逻辑
-            this.ShowChild.IsCanExecute = new Func<object, bool>((o) =>
-            {
-                return true;
-            });
-
             //启用/禁用事件
             this.ChangeUsing = new CommandBase();
             //执行通过委托调用方法
@@ -83,18 +73,21 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
 
             //编辑详情
             this.EditDetail = new DelegateCommand<object>(EditDetailAction);
+            //显示子项事件
+            this.ShowChild = new DelegateCommand<object>(ShowChildAction);
         }
 
         public void SurchMenuListAction(object o)
         {
             MenuList.Clear();
             TreeMenuItems.Clear();
-            FillMenus(TreeMenuItems, 0);
+            FillMenus(TreeMenuItems,0,0);
             TreeMenuItems.ForEach(p => MenuList.Add(new SysMenuListModel
             {
                 SysMenu = p.SysMenu,
                 CanExpanded = p.CanExpanded,
-                IsShow = p.IsShow
+                IsShow = p.IsShow,
+                Level= p.Level
             }));
         }
 
@@ -103,8 +96,9 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         ///// </summary>
         ///// <param name="TreeMenuItems">树状菜单列表</param>
         ///// <param name="FatherId"></param>
-        private void FillMenus(List<SysMenuListModel> TreeMenuItems, int ParentId)
+        private void FillMenus(List<SysMenuListModel> TreeMenuItems, int ParentId,int Num)
         {
+            Num = Num + 1;
             List<SYS_MENU> list = action.GetMenuListAction();
             var menus = list.Where(m => m.PARENTID == ParentId).OrderBy(o => o.MENUINDEX);
 
@@ -116,12 +110,13 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                     {
                         SysMenu = item,
                         CanExpanded = list.Where(m => m.PARENTID == item.MID).Count() > 0 ? "Visible" : "Collapsed",
-                        IsShow= item.PARENTID==0 ? "Visible" : "Collapsed"
+                        IsShow= item.PARENTID==0 ? "Visible" : "Collapsed",
+                        Level=Num
                     };
 
                     TreeMenuItems.Add(mm);
 
-                    FillMenus(TreeMenuItems, item.MID);
+                    FillMenus(TreeMenuItems, item.MID, Num);
                 }
             }
 
@@ -129,17 +124,48 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
 
         public void ShowChildAction(object o) 
         { 
-            int s=Convert.ToInt32(o);
-            //bool b=!MenuList.Find(m=>m.SysMenu.MID==s).IsOpen;
+            int mid=Convert.ToInt32(o);
+            string state = MenuList.First(m => m.SysMenu.MID == mid).IsOpen == true ? "close" : "open";
+            if (state == "open")
+            {
+                OpenChild(mid);
+            }
+            else 
+            {
+                CloseChild(mid);
+            }
+        }
+
+        public void OpenChild(int mid)
+        {
             foreach (var item in MenuList)
             {
-                if (item.SysMenu.MID == s)
+                if (item.SysMenu.MID == mid)
                 {
-                    item.IsOpen = !item.IsOpen;
+                    item.IsOpen = true;
                 }
-                if (item.SysMenu.PARENTID == s)
+                if (item.SysMenu.PARENTID == mid)
                 {
-                    item.IsShow = item.IsShow == "Collapsed" ? "Visible": "Collapsed";
+                    item.IsShow = "Visible";
+                }
+            }
+        }
+
+        public void CloseChild(int mid)
+        {
+            foreach (var item in MenuList)
+            {
+                if (item.SysMenu.MID == mid)
+                {
+                    item.IsOpen = false;
+                }
+                if (item.SysMenu.PARENTID == mid)
+                {
+                    item.IsShow = "Collapsed";
+                    if (MenuList.Where(a => a.SysMenu.PARENTID == item.SysMenu.MID).Count() > 0)
+                    {
+                        CloseChild(item.SysMenu.MID);
+                    }
                 }
             }
         }

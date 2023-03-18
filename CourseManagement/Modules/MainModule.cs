@@ -40,6 +40,7 @@ namespace CourseManagement.Modules
             containerRegistry.RegisterDialog<UserInfoDetailView>();
             containerRegistry.RegisterDialog<MenuInfoDetailView>();
             containerRegistry.RegisterDialog<RoleInfoDetailView>();
+            containerRegistry.RegisterDialog<SetAuthView>();
         }
     }
 }

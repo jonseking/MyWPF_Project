@@ -133,6 +133,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Views\UserInfo\SetAuthView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Views\UserInfo\UserInfoDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -182,8 +186,10 @@
     <Compile Include="Common\TabinfoHelper.cs" />
     <Compile Include="Common\VerificationCodeHelper.cs" />
     <Compile Include="Converter\IsUsingConverter.cs" />
-    <Compile Include="Converter\MenuExpansionConverter.cs" />
+    <Compile Include="Converter\IconConverter.cs" />
+    <Compile Include="Converter\MarginConverter.cs" />
     <Compile Include="Converter\NumberConverter.cs" />
+    <Compile Include="DataAccess\AccessOperation\AuthManagerAction.cs" />
     <Compile Include="DataAccess\AccessOperation\LoginAction.cs" />
     <Compile Include="DataAccess\AccessOperation\MenuManagerAction.cs" />
     <Compile Include="DataAccess\AccessOperation\RoleManagerAction.cs" />
@@ -199,6 +205,9 @@
     <Compile Include="Model\DataGridCheckModel.cs" />
     <Compile Include="Model\EntityModel\BASE_CUSTOMERGPT.cs" />
     <Compile Include="Model\EntityModel\DictionaryInfo.cs" />
+    <Compile Include="Model\AdditionalModel\ISYS_AUTH.cs" />
+    <Compile Include="Model\SysAuthListModel.cs" />
+    <Compile Include="Model\EntityModel\SYS_AUTH.cs" />
     <Compile Include="Model\EntityModel\SYS_MENU.cs" />
     <Compile Include="Model\EntityModel\SYS_ROLE.cs" />
     <Compile Include="Model\MenuItemModel.cs" />
@@ -218,6 +227,7 @@
     <Compile Include="Modules\ViewModels\UserInfo\MenuManagerViewModel.cs" />
     <Compile Include="Modules\ViewModels\UserInfo\RoleInfoDetailViewModel.cs" />
     <Compile Include="Modules\ViewModels\UserInfo\RoleManagerViewModel.cs" />
+    <Compile Include="Modules\ViewModels\UserInfo\SetAuthViewModel.cs" />
     <Compile Include="Modules\ViewModels\UserInfo\UserInfoDetailViewModel.cs" />
     <Compile Include="Modules\ViewModels\UserInfo\UserManageViewModel.cs" />
     <Compile Include="Modules\Views\Auxiliary\CustomerGptView.xaml.cs">
@@ -242,6 +252,9 @@
     </Compile>
     <Compile Include="Modules\Views\UserInfo\RoleManagerView.xaml.cs">
       <DependentUpon>RoleManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Views\UserInfo\SetAuthView.xaml.cs">
+      <DependentUpon>SetAuthView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Views\UserInfo\UserInfoDetailView.xaml.cs">
       <DependentUpon>UserInfoDetailView.xaml</DependentUpon>

@@ -325,4 +325,12 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <Style x:Key="FooBar" TargetType="Grid">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#503399FF"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

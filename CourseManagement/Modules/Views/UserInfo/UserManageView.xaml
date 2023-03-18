@@ -231,7 +231,7 @@
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>
-                                <Button Name="btReset" Width="30" Height="30" Background="Transparent" Foreground="#80FF0033"
+                                <Button Name="btReset" Width="30" Height="30" Background="Transparent" Foreground="#80CC66FF"
                         VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
                         Content="&#xe619;" Command="{Binding DataContext.ResetPassword,RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
                                             CommandParameter="{Binding SysUser.USERID}">
@@ -242,7 +242,24 @@
                        FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter TargetName="txtReset" Property="Foreground" Value="#FF0033"/>
+                                                    <Setter TargetName="txtReset" Property="Foreground" Value="#CC66FF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button Name="btauth" Width="30" Height="30" Background="Transparent" Foreground="#80FF0033"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="0" FontSize="20"
+                        Content="&#xe64d;" Command="{Binding DataContext.AuthDetail,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                        CommandParameter="{Binding SysUser.USERID}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock Name="txtauth" Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="/Assets/iconfont/#iconfont"></TextBlock>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter TargetName="txtauth" Property="Foreground" Value="#FF0033"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>

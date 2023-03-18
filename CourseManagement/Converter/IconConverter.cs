@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace CourseManagement.Converter
 {
-    public class MenuExpansionConverter : IValueConverter
+    public class IconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

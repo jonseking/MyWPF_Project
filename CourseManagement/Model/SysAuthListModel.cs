@@ -1,25 +1,17 @@
 ﻿using CourseManagement.Common;
-using CourseManagement.Model.EntityModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseManagement.Model
+namespace CourseManagement.Model.EntityModel
 {
-    public class SysMenuListModel:NotifyBase
+    public class SysAuthListModel:NotifyBase
     {
-        private SYS_MENU _sysmenu;
-
-        public SYS_MENU SysMenu
-        {
-            get { return _sysmenu; }
-            set { _sysmenu = value; this.DoNotify(); }
-        }
 
         //能否展开
-        private String  _canexpanded;
+        private String _canexpanded;
 
         public String CanExpanded
         {
@@ -28,7 +20,7 @@ namespace CourseManagement.Model
         }
 
         //显示控制
-        private bool _isopen=false;
+        private bool _isopen = false;
 
         public bool IsOpen
         {
@@ -45,6 +37,15 @@ namespace CourseManagement.Model
             set { _isshow = value; this.DoNotify(); }
         }
 
+        //是否选中
+        private bool _isChecked = false;
+
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set { _isChecked = value; this.DoNotify(); }
+        }
+
         //级别
         private int _level;
 
@@ -54,12 +55,13 @@ namespace CourseManagement.Model
             set { _level = value; this.DoNotify(); }
         }
 
-        //private List<SysMenuListModel> _childs;
-        //public List<SysMenuListModel> Childs 
-        //{
-        //    get { return _childs; }
-        //    set { _childs = value; this.DoNotify(); }
-        //}
+        private ISYS_AUTH _sysAuth;
 
-    }
+		public ISYS_AUTH SysAuth
+        {
+			get { return _sysAuth; }
+			set { _sysAuth = value; }
+		}
+
+	}
 }

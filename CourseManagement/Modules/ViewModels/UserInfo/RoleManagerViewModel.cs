@@ -51,6 +51,11 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         public ICommand EditDetail { get; set; }
         /// <summary>
+        /// 分配权限
+        /// </summary>
+        public ICommand AuthDetail { get; set; }
+        
+        /// <summary>
         /// 分页管理
         /// </summary>
         public ICommand PageSearchCommand { get; set; }
@@ -100,6 +105,8 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             this.ShowDetail = new DelegateCommand<object>(ShowDetailAction);
             //编辑详情
             this.EditDetail = new DelegateCommand<object>(EditDetailAction);
+            //分配权限
+            this.AuthDetail = new DelegateCommand<object>(AuthDetailAction);
         }
 
         public void Bindinfo()
@@ -161,16 +168,33 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         private void DetailAction(DialogParameters dialogParameters)
         {
-            _dialogService.ShowDialog("RoleInfoDetailView", dialogParameters, result =>
+            string OpenView= dialogParameters.GetValue<String>("type")== "roleauth" ? "SetAuthView":"RoleInfoDetailView";
+            _dialogService.ShowDialog(OpenView, dialogParameters, result =>
             {
                 if (result.Result == ButtonResult.OK)
                 {
-                    string mess = string.Format(@"{0}角色信息成功！", dialogParameters.GetValue<String>("type") == "edit" ? "更新" : "新增");
-                    MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
-                    SurchRoleListAction(null);
+                    if (dialogParameters.GetValue<String>("type") == "roleauth")
+                    {
+                        MessageBox.Show("保存权限成功！", "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else 
+                    {
+                        string mess = string.Format(@"{0}角色信息成功！", dialogParameters.GetValue<String>("type") == "edit" ? "更新" : "新增");
+                        MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                        SurchRoleListAction(null);
+                    }
                 }
             });
         }
+
+        public void AuthDetailAction(object o)
+        {
+            DialogParameters dialogParameters = new DialogParameters();
+            dialogParameters.Add("id", o.ToString());
+            dialogParameters.Add("type", "roleauth");
+            DetailAction(dialogParameters);
+        }
+
         /// <summary>
         /// 翻页
         /// </summary>

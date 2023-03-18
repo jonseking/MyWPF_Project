@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CourseManagement.Modules.Views.UserInfo"
              xmlns:converter="clr-namespace:CourseManagement.Converter"
-              xmlns:prism="http://prismlibrary.com/" 
+             xmlns:prism="http://prismlibrary.com/" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:c="http://schemas.microsoft.com/expression/2010/interactivity" 
              xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
@@ -19,7 +19,8 @@
                 <ResourceDictionary Source="/Resource/ButtonCurrDic.xaml"/>
                 <ResourceDictionary>
                     <converter:IsUsingConverter x:Key="usingconverter"/>
-                    <converter:MenuExpansionConverter x:Key="menuexpansionconverter"/>
+                    <converter:IconConverter x:Key="IconConverter"/>
+                    <converter:MarginConverter x:Key="marginconverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -32,7 +33,7 @@
         <Border Background="#3399FF" Margin="5,0,0,5" CornerRadius="5">
             <Grid>
                 <UniformGrid Columns="5"  Grid.Column="2">
-                    <TextBlock Text="菜单名称" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="菜单名称" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30,0,0,0" />
                     <TextBlock Text="菜单路径" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBlock Text="菜单排序" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <TextBlock Text="启用状态" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -42,17 +43,17 @@
         </Border>
         <!--表体-->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-            <ItemsControl ItemsSource="{Binding MenuList}">
+            <ItemsControl ItemsSource="{Binding MenuList}" AlternationCount="2">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Style="{StaticResource FooBar}">
                             <Border BorderBrush="#eee" BorderThickness="0,0,0,1" 
                                     SnapsToDevicePixels="True" Visibility="{Binding IsShow}"></Border>
                             <UniformGrid Columns="5" Grid.Column="1" Visibility="{Binding IsShow}">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="{Binding Level,Converter={StaticResource marginconverter}}">
                                     <Button Foreground="#3399FF" FontSize="14" Width="15" Visibility="{Binding CanExpanded}"
                                             HorizontalAlignment="Center" VerticalAlignment="Center"
-                                            Content="{Binding IsOpen,Converter={StaticResource menuexpansionconverter}}"
+                                            Content="{Binding IsOpen,Converter={StaticResource IconConverter}}"
                                             Command="{Binding DataContext.ShowChild,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
                                             CommandParameter="{Binding SysMenu.MID}"
                                             >

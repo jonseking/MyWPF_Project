@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="CourseManagement.Modules.Views.UserInfo.SetAuthView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CourseManagement.Modules.Views.UserInfo"
+             xmlns:converter="clr-namespace:CourseManagement.Converter"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resource/PageCurrDic.xaml"/>
+                <ResourceDictionary Source="/Resource/ButtonCurrDic.xaml"/>
+                <ResourceDictionary>
+                    <converter:IsUsingConverter x:Key="usingconverter"/>
+                    <converter:IconConverter x:Key="IconConverter"/>
+                    <converter:MarginConverter x:Key="marginconverter"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="450"/>
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome GlassFrameThickness="-1" NonClientFrameEdges="None" ResizeBorderThickness="0"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="350"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        <Border Background="#3399FF" Margin="5,0,0,5" CornerRadius="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="选择" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Text="权限名称" Grid.Column="1" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0" />
+            </Grid>
+        </Border>
+        <!--表体-->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <ItemsControl ItemsSource="{Binding AuthList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Style="{StaticResource FooBar}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Border BorderBrush="#eee" BorderThickness="0,0,0,1" Grid.ColumnSpan="2"
+                                    SnapsToDevicePixels="True" Visibility="{Binding IsShow}"></Border>
+
+                            <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                      IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                      Visibility="{Binding IsShow}">
+                                <c:Interaction.Triggers>
+                                    <c:EventTrigger EventName="Click">
+                                        <Custom:EventToCommand Command="{Binding DataContext.CheckCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                               CommandParameter="{Binding SysAuth.AUTHID}">
+                                        </Custom:EventToCommand>
+                                    </c:EventTrigger>
+                                </c:Interaction.Triggers>
+                            </CheckBox>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding IsShow}" Margin="{Binding Level,Converter={StaticResource marginconverter}}">
+                                <Button Foreground="#3399FF" FontSize="14" Width="15" Visibility="{Binding CanExpanded}"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Content="{Binding IsOpen,Converter={StaticResource IconConverter}}"
+                                            Command="{Binding DataContext.ShowChild,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"
+                                            CommandParameter="{Binding SysAuth.AUTHID}"
+                                            >
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <TextBlock Text="{Binding Content,RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}" FontFamily="/Assets/iconfont/#iconfont"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <TextBlock Text="{Binding SysAuth.AUTHNAME}"  FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <!--操作按钮-->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
+            <Button Content="确认" Template="{StaticResource GreenButton}"
+                    Command="{Binding ConfirmCommand}"/>
+            <Button Content="关闭" Template="{StaticResource RedButton}"
+                    Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

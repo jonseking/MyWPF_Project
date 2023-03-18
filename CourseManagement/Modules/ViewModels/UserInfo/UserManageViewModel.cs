@@ -79,7 +79,10 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// 选择框点击
         /// </summary>
         public CommandBase CheckCommand { get; set; }
-
+        /// <summary>
+        /// 分配权限
+        /// </summary>
+        public ICommand AuthDetail { get; set; }
         /// <summary>
         /// 定义字典值
         /// </summary>
@@ -159,7 +162,8 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             this.ShowDetail = new DelegateCommand<object>(ShowDetailAction);
             //编辑详情
             this.EditDetail = new DelegateCommand<object>(EditDetailAction);
-
+            //分配权限
+            this.AuthDetail = new DelegateCommand<object>(AuthDetailAction);
 
             //分页事件
             this.PageSearchCommand = new CommandBase();
@@ -274,13 +278,21 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         private void DetailAction(DialogParameters dialogParameters)
         {
-            _dialogService.ShowDialog("UserInfoDetailView", dialogParameters, result =>
+            string OpenView = dialogParameters.GetValue<String>("type") == "userauth" ? "SetAuthView" : "UserInfoDetailView";
+            _dialogService.ShowDialog(OpenView, dialogParameters, result =>
             {
                 if (result.Result == ButtonResult.OK)
                 {
-                    string mess = string.Format(@"{0}用户信息成功！", dialogParameters.GetValue<String>("type") == "edit" ? "更新" : "新增");
-                    MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
-                    SurchUserListAction(null);
+                    if (dialogParameters.GetValue<String>("type") == "userauth")
+                    {
+                        MessageBox.Show("保存权限成功！", "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else 
+                    {
+                        string mess = string.Format(@"{0}用户信息成功！", dialogParameters.GetValue<String>("type") == "edit" ? "更新" : "新增");
+                        MessageBox.Show(mess, "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
+                        SurchUserListAction(null);
+                    }
                 }
             });
         }
@@ -340,8 +352,8 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                     userids += "'" + item.SysUser.USERID + "',";
                 }
                 userids = userids.Remove(userids.LastIndexOf(","));
-                int result=action.DelUserInfo(userids);
-                if (result > 0)
+                bool result=action.DelUserInfo(userids);
+                if (result)
                 {
                     MessageBox.Show("删除用户成功", "系统消息", MessageBoxButton.OK, MessageBoxImage.Information);
                     SurchUserListAction(null);
@@ -384,6 +396,14 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                 GridCheckModel.CheckTitle = "全选";
                 GridCheckModel.IsCheckAll = false;
             }
+        }
+
+        public void AuthDetailAction(object o)
+        {
+            DialogParameters dialogParameters = new DialogParameters();
+            dialogParameters.Add("id", o.ToString());
+            dialogParameters.Add("type", "userauth");
+            DetailAction(dialogParameters);
         }
     }
 }

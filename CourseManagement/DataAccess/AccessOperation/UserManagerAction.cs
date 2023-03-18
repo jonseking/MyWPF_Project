@@ -71,16 +71,31 @@ namespace CourseManagement.DataAccess.AccessOperation
             }
         }
         /// <summary>
-        /// 用户信息删除（后续增加同时删除权限等信息）
+        /// 用户信息删除
         /// </summary>
         /// <param name="userids"></param>
         /// <returns></returns>
-        public int DelUserInfo(string userids)
+        public bool DelUserInfo(string userids)
         {
-            string sql = string.Format(@"DELETE FROM SYS_USER WHERE USERID IN({0})", userids);
+            bool result=false;
             using (DBHelper db = new DBHelper())
             {
-                return db.ExecuteNonQuery(sql);
+                try
+                {
+                    string sql = string.Format(@"DELETE FROM SYS_USERAUTH WHERE USERID IN({0})", userids);
+                    db.BeginTransaction();
+                    db.ExecuteNonQuery(sql);
+                    sql = string.Format(@"DELETE FROM SYS_USER WHERE USERID IN({0})", userids);
+                    db.ExecuteNonQuery(sql);
+                    db.CommitTransaction();
+                    result = true;  
+                }
+                catch (Exception)
+                {
+                    db.RollbackTransaction();
+                    throw;
+                }
+                return result;
             }
         }
         /// <summary>
