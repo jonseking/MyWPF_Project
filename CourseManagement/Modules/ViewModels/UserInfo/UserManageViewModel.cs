@@ -1,26 +1,19 @@
 ﻿using CourseManagement.Common;
 using CourseManagement.DataAccess.AccessOperation;
 using CourseManagement.Model;
+using CourseManagement.Model.AdditionalModel;
 using CourseManagement.Model.EntityModel;
 using CourseManagement.Model.SurchModel;
-using CourseManagement.Modules.Views.UserInfo;
-using GalaSoft.MvvmLight.Views;
-using PORM.Data;
+using Form.DataAccess;
+using Form.Data;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Drawing.Printing;
+using System.Data;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -68,6 +61,10 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         public ICommand EditDetail { get; set; }
         /// <summary>
+        /// 添加
+        /// </summary>
+        public ICommand Add { get; set; } 
+        /// <summary>
         /// 分页管理
         /// </summary>
         public CommandBase PageSearchCommand { get; set; }
@@ -88,6 +85,11 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// </summary>
         public List<DictionaryInfo> diclist { get; set; }
         public DictionaryInfo Currentdic { get; set; }
+        /// <summary>
+        /// 定义字典值
+        /// </summary>
+        public List<DictionaryInfo> dicrlist { get; set; }
+        public DictionaryInfo Currentrdic { get; set; }
         //查询结果集合
         public ObservableCollection<SysUserListModel> UserList { get; set; }
 
@@ -164,6 +166,8 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             this.EditDetail = new DelegateCommand<object>(EditDetailAction);
             //分配权限
             this.AuthDetail = new DelegateCommand<object>(AuthDetailAction);
+            //添加用户
+            this.Add = new DelegateCommand<object>(AddUserAction);
 
             //分页事件
             this.PageSearchCommand = new CommandBase();
@@ -200,8 +204,9 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         {
             UserList.Clear();
             Surchmodel.UserState = Currentdic.DicId;
+            Surchmodel.RoleId= Currentrdic.DicId;    
             string WhereStr = QueryParam.GetWhereString<UserInfoModelcs>(Surchmodel, true, true);
-            List<SYS_USER> list = action.GetUserInfoListAction(WhereStr,Pagemodel);
+            List<ISYS_USER> list = action.GetUserInfoListAction(WhereStr,Pagemodel);
             list.ForEach(p => UserList.Add(new SysUserListModel() {SysUser=p}));
             CheckAllCorrection();
         }
@@ -213,6 +218,15 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             diclist.Add(new DictionaryInfo() { DicId = "0", DicName = "禁用" });
             //设置默认选择项
             Currentdic = diclist[0];
+
+            List<SYS_ROLE> rolelist = action.QueryRoleList();
+            dicrlist = new List<DictionaryInfo>();
+            dicrlist.Add(new DictionaryInfo() { DicId = "", DicName = "全部" });
+            foreach (SYS_ROLE role in rolelist)
+            {
+                dicrlist.Add(new DictionaryInfo() { DicId = role.ROLEID.ToString(), DicName = role.ROLENAME });
+            }
+            Currentrdic = dicrlist[0];
         }
         /// <summary>
         /// 用户启/禁用
@@ -403,6 +417,15 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
             DialogParameters dialogParameters = new DialogParameters();
             dialogParameters.Add("id", o.ToString());
             dialogParameters.Add("type", "userauth");
+            DetailAction(dialogParameters);
+        }
+        /// <summary>
+        /// 添加用户
+        /// </summary>
+        /// <param name="o"></param>
+        public void AddUserAction(object o) {
+            DialogParameters dialogParameters = new DialogParameters();
+            dialogParameters.Add("type", "add");
             DetailAction(dialogParameters);
         }
     }

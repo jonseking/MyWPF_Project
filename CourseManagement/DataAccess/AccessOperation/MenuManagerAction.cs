@@ -1,12 +1,9 @@
-﻿using CourseManagement.DataAccess.PORM.Data;
-using CourseManagement.Model.EntityModel;
-using CourseManagement.Model;
+﻿using CourseManagement.Model.EntityModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
+using Form.DataAccess.PORM.Data;
 
 namespace CourseManagement.DataAccess.AccessOperation
 {

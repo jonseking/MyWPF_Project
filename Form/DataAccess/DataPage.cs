@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseManagement.DataAccess
+namespace Form.DataAccess
 {
     /// <summary>
     /// 分页查询结果实体

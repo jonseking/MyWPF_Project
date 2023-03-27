@@ -53,6 +53,9 @@
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="Prism, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
@@ -194,13 +197,11 @@
     <Compile Include="DataAccess\AccessOperation\MenuManagerAction.cs" />
     <Compile Include="DataAccess\AccessOperation\RoleManagerAction.cs" />
     <Compile Include="DataAccess\AccessOperation\UserManagerAction.cs" />
-    <Compile Include="DataAccess\DataPage.cs" />
-    <Compile Include="DataAccess\DBHelper.cs" />
-    <Compile Include="DataAccess\DBHelperFactory.cs" />
-    <Compile Include="DataAccess\DBType.cs" />
     <Compile Include="Demo\ItemsControlList.xaml.cs">
       <DependentUpon>ItemsControlList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\AdditionalModel\ISYS_USER.cs" />
+    <Compile Include="Model\AuthorizationApiResult.cs" />
     <Compile Include="Model\CustomerGptInfoModel.cs" />
     <Compile Include="Model\DataGridCheckModel.cs" />
     <Compile Include="Model\EntityModel\BASE_CUSTOMERGPT.cs" />
@@ -213,14 +214,13 @@
     <Compile Include="Model\MenuItemModel.cs" />
     <Compile Include="Model\EntityModel\SYS_USER.cs" />
     <Compile Include="Model\MessageInfoModel.cs" />
-    <Compile Include="Model\PaginationModel.cs" />
     <Compile Include="Model\SurchModel\LoginModelcs.cs" />
     <Compile Include="Model\SurchModel\RoleIfoModelcs.cs" />
     <Compile Include="Model\SurchModel\UserInfoModelcs.cs" />
     <Compile Include="Model\SysMenuListModel.cs" />
     <Compile Include="Model\SysRoleListModel.cs" />
     <Compile Include="Model\SysUserListModel.cs" />
-    <Compile Include="Model\ViewModel.cs" />
+    <Compile Include="Model\VocationalWorkApiResult.cs" />
     <Compile Include="Modules\ViewModels\Auxiliary\CustomerGptViewModel.cs" />
     <Compile Include="Modules\ViewModels\BaseInfo\DefaulViewModel.cs" />
     <Compile Include="Modules\ViewModels\UserInfo\MenuInfoDetailViewModel.cs" />

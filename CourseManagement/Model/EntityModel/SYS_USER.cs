@@ -1,12 +1,6 @@
-﻿
-
-using PORM.Data;
+﻿using Form.DataAccess;
+using Form.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace CourseManagement.Model.EntityModel
 {
@@ -14,7 +8,7 @@ namespace CourseManagement.Model.EntityModel
     {
         [ColumnAttribute(PrimaryKey = true)]
         [ViewAttribute(ViewName = "USERID")]
-        public int USERID { get; set; }
+        public int? USERID { get; set; }
 
         [ViewAttribute(ViewName = "账号")]
         public string USERNAME { get; set; }

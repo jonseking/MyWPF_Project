@@ -1,4 +1,5 @@
 ﻿using CourseManagement.Common;
+using CourseManagement.Model.AdditionalModel;
 using CourseManagement.Model.EntityModel;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace CourseManagement.Model
 			set { _isChecked = value; this.DoNotify(); }
 		}
 
-		private SYS_USER _sysUser;
+		private ISYS_USER _sysUser;
 
-		public SYS_USER SysUser
+		public ISYS_USER SysUser
         {
 			get { return _sysUser; }
 			set { _sysUser = value; this.DoNotify(); }

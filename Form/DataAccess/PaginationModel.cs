@@ -1,14 +1,17 @@
-﻿using CourseManagement.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-namespace CourseManagement.Model
+namespace Form.DataAccess
 {
-    public class PaginationModel:NotifyBase
+    public class PaginationModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void DoNotify([CallerMemberName] string propName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
         private int _totalPage;
         /// <summary>
         /// 总页数
@@ -23,7 +26,7 @@ namespace CourseManagement.Model
             }
         }
 
-        private int _currentPage=1;
+        private int _currentPage = 1;
         /// <summary>
         /// 当前页
         /// </summary>
@@ -61,7 +64,7 @@ namespace CourseManagement.Model
             set
             {
                 _totalCount = value;
-                this.DoNotify() ;
+                this.DoNotify();
             }
         }
     }

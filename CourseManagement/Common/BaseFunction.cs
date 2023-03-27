@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.RightsManagement;
 
 namespace CourseManagement.Common
 {
@@ -66,5 +67,11 @@ namespace CourseManagement.Common
             }
             return ip;
         }
+
+        //public static T ConversionModel<T>(T model,string data) where T : class
+        //{
+
+        //    return model=data.
+        //}
     }
 }

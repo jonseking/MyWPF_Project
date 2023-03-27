@@ -5,18 +5,17 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 using System.Windows.Input;
 using CourseManagement.DataAccess.AccessOperation;
 using CourseManagement.Model.EntityModel;
 using System.Collections.ObjectModel;
-using PORM.Data;
+using Form.Data;
 using Prism.Services.Dialogs;
 using Prism.Commands;
 using System.Windows.Controls;
 using System.Windows;
+using Form.DataAccess;
 
 namespace CourseManagement.Modules.ViewModels.UserInfo
 {

@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -34,11 +35,39 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         /// <summary>
         /// 文本框是否可编辑
         /// </summary>
-        private bool _isEnabl = false;
+        private bool _isenabl = false;
         public bool IsEnabl
         {
-            get { return _isEnabl; }
-            set { _isEnabl = value; this.DoNotify(); }
+            get { return _isenabl; }
+            set { _isenabl = value; this.DoNotify(); }
+        }
+
+        /// <summary>
+        /// 账号文本框是否可编辑
+        /// </summary>
+        private bool _isenabluid = false;
+        public bool IsEnablUID
+        {
+            get { return _isenabluid; }
+            set { _isenabluid = value; this.DoNotify(); }
+        }
+        /// <summary>
+        /// 定义字典值
+        /// </summary>
+        private List<DictionaryInfo> _diclist;
+
+        public List<DictionaryInfo> DicList
+        {
+            get { return _diclist; }
+            set { _diclist = value; this.DoNotify(); }
+        }
+
+        private DictionaryInfo _currentdic;
+
+        public DictionaryInfo Currentdic
+        {
+            get { return _currentdic; }
+            set { _currentdic = value; this.DoNotify(); }
         }
 
         /// <summary>
@@ -82,6 +111,7 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
         {
             //接受窗体数据状态查看/编辑/新增\
             operation = parameters.GetValue<String>("type");
+            Bindinfo();
             switch (operation)
             {
                 case "show":
@@ -89,16 +119,21 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                     Visible = "Collapsed";
                     //获取要编辑的用户信息
                     UsreModel = action.GetUserInfoByID(parameters.GetValue<string>("id"));
+                    Currentdic = DicList.Find(d => d.DicId == UsreModel.ROLEID.ToString());
                     break;
                 case "edit":
                     Title = "用户信息编辑";
                     IsEnabl = true;
                     //获取要编辑的用户信息
                     UsreModel = action.GetUserInfoByID(parameters.GetValue<string>("id"));
+                    Currentdic = DicList.Find(d => d.DicId == UsreModel.ROLEID.ToString());
                     break;
                 case "add":
+                    UsreModel = new SYS_USER();
                     Title = "添加用户信息";
                     IsEnabl = true;
+                    IsEnablUID = true;
+                    Currentdic = DicList[0];
                     break;
                 default:
                     Title = "";
@@ -106,12 +141,40 @@ namespace CourseManagement.Modules.ViewModels.UserInfo
                     break;
             }
         }
+        public void Bindinfo()
+        {
+            List<SYS_ROLE> rolelist=action.QueryRoleList();
+            DicList = new List<DictionaryInfo>();
+            foreach (SYS_ROLE role in rolelist)
+            {
+                DicList.Add(new DictionaryInfo() { DicId = role.ROLEID.ToString(), DicName = role.ROLENAME });
+            }
+        }
         //确认
         public ICommand ConfirmCommand
         {
             get => new DelegateCommand(() => 
             {
-                if (action.EditUserInfo(UsreModel) > 0)
+                int result;
+                if (operation == "edit")
+                {
+                    bool changerole = false;
+                    if (UsreModel.ROLEID != Convert.ToInt32(Currentdic.DicId))
+                    {
+                        changerole = true;  
+                        UsreModel.ROLEID = Convert.ToInt32(Currentdic.DicId);
+                    }
+                    result = action.EditUserInfo(UsreModel, changerole);
+                }
+                else 
+                {
+                    UsreModel.ROLEID=Convert.ToInt32(Currentdic.DicId);
+                    UsreModel.USERPWD= BaseFunction.EncryptMd5("999999");
+                    UsreModel.CREATOR = GlobalValue.UserInfo.USERNAME;
+                    UsreModel.CreateTime= DateTime.Now;
+                    result = action.AddUserInfo(UsreModel);
+                }
+                if (result>0)
                 {
                     RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
                 }

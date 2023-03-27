@@ -1,19 +1,14 @@
 ﻿using CourseManagement.Common;
 using CourseManagement.DataAccess.AccessOperation;
-using CourseManagement.DataAccess.PORM.Data;
 using CourseManagement.Model;
 using CourseManagement.Model.EntityModel;
-using CourseManagement.View;
+using Form.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Security;
 using System.Runtime.Caching;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace CourseManagement.ViewModel
 {
@@ -47,7 +42,7 @@ namespace CourseManagement.ViewModel
         {
             this.Loginmodel = new LoginModelcs();
             this.Loginmodel.Username = "Admin";
-            this.Loginmodel.Password = "111111";
+            this.Loginmodel.Password = "999999";
             this.Loginmodel.Vercode = cache["Vercodecache"] as string;
 
             //页面关闭时间处理逻辑
@@ -102,54 +97,43 @@ namespace CourseManagement.ViewModel
             {
                 LoginAction loginaction = new LoginAction();
                 SYS_USER user;
-
+                string message = string.Empty;
                 //启用线程任务
                 Task.Run(new Action( () =>
                 {
                     //线程等待
                     //await Task.Delay(2000);
-                    int result = loginaction.Login(Loginmodel.Username, Loginmodel.Password, out user);
-                    if (result <= 0)
+                    string result = loginaction.Login(Loginmodel.Username, Loginmodel.Password, out message);
+                    if (result == "false")
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
                             bt.IsEnabled = true;
                             bt.Content = "登  录";
                         }));
-                        switch (result)
-                        {
-                            case -1:
-                                this.ErrMessage = "用户名或密码有误";
-                                break;
-                            case -2:
-                                this.ErrMessage = "当前用户已被禁用";
-                                break;
-                            case -3:
-                                this.ErrMessage = "当前用户已在其它设备登录";
-                                break;
-                            case -9:
-                                this.ErrMessage = "当前系统异常";
-                                break;
-                            default:
-                                this.ErrMessage = "当前系统异常";
-                                break;
-                        }
+                        this.ErrMessage = message;
                     }
                     else
                     {
-                        //修改登录信息
-                        SYS_USER info=new SYS_USER();
-                        info.USERID= user.USERID;
-                        info.ISONLINE = 1;
-                        info.LASTLOGINTIME=DateTime.Now;
-                        info.LOGINIP =BaseFunction.GetLocalIp();
-                        loginaction.LoginInfoChange(info);
-                        //给全局变量赋值（用户信息）
+                        //给全局变量赋值（Token）
+                        GlobalValue.Token = message;
+                        //获取用户信息
+                        user =loginaction.QueryUserInfoByID(string.Empty);
+                        
+                        ////给全局变量赋值（用户信息）
                         GlobalValue.UserInfo = user;
-                        //给全局变量赋值（菜单列表）
-                        GlobalValue.ListMenuInfo = GetMenusByUserID(user.USERID);
 
-                        //
+                        //给全局变量赋值（菜单列表）
+                        GlobalValue.ListMenuInfo = loginaction.GetMenusByUserID(string.Empty);
+
+                        //修改登录信息
+                        SYS_USER info = new SYS_USER();
+                        info.USERID = user.USERID;
+                        info.ISONLINE = 1;
+                        info.LASTLOGINTIME = DateTime.Now;
+                        info.LOGINIP = BaseFunction.GetLocalIp();
+                        loginaction.LoginInfoChange(info);
+
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
                             (o as Window).DialogResult = true;
@@ -206,12 +190,6 @@ namespace CourseManagement.ViewModel
             }
 
             return this.ErrMessage;
-        }
-
-        public IList<SYS_MENU> GetMenusByUserID(int UsetID)
-        {
-            LoginAction loginaction = new LoginAction();
-            return loginaction.GetMenusByUserID(UsetID);
         }
     }
 }

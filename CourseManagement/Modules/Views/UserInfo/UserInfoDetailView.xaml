@@ -40,13 +40,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="账      号：" Style="{StaticResource FormLableStyle}"/>
-            <TextBox Template="{DynamicResource FormTBoxStyle}" Grid.Column="1" IsEnabled="False"
+            <TextBox Template="{DynamicResource FormTBoxStyle}" Grid.Column="1" IsEnabled="{Binding IsEnablUID}"
                      HorizontalAlignment="Left"
                      Text="{Binding UsreModel.USERNAME}">
             </TextBox>
@@ -55,6 +56,13 @@
                      HorizontalAlignment="Left"
                      Text="{Binding UsreModel.FULLNAME}"
                      IsEnabled="{Binding IsEnabl}"/>
+            <TextBlock Text="用户角色：" Grid.Row="2" Grid.Column="0" Style="{StaticResource FormLableStyle}"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Template="{DynamicResource ComboBoxTemplate1}"
+                      HorizontalAlignment="Left"
+                      ItemsSource="{Binding DicList}" 
+                      DisplayMemberPath="DicName"
+                      SelectedItem="{Binding Currentdic}"
+                      IsEnabled="{Binding IsEnabl}"/>
         </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
             <Button Content="提交" Template="{StaticResource GreenButton}"

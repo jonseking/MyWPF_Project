@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CourseManagement.DataAccess
+﻿using global::Form.Data;
+namespace Form.DataAccess
 {
-    using CourseManagement.Model;
-    using global::PORM.Data;
-
     /**
      * 数据库访问帮助类，部分参照petapoco(http://www.toptensoftware.com/petapoco/)
      * */

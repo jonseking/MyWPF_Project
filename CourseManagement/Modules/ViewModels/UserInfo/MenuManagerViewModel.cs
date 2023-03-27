@@ -2,17 +2,12 @@
 using CourseManagement.DataAccess.AccessOperation;
 using CourseManagement.Model;
 using CourseManagement.Model.EntityModel;
-using CourseManagement.Model.SurchModel;
-using PORM.Data;
 using Prism.Commands;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;

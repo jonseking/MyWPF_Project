@@ -1,10 +1,5 @@
 ﻿using CourseManagement.Common;
-using PORM.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Form.Data;
 
 namespace CourseManagement.Model.SurchModel
 {
@@ -44,6 +39,18 @@ namespace CourseManagement.Model.SurchModel
             set
             {
                 _userstate = value;
+                this.DoNotify();
+            }
+        }
+
+        private string _roleid;
+        [SerachCol(OpSerach = OperaSerach.等于, OrdinalIgnoreCase = true)]
+        public string RoleId
+        {
+            get { return _roleid; }
+            set
+            {
+                _roleid = value;
                 this.DoNotify();
             }
         }

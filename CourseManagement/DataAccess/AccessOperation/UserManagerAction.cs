@@ -1,12 +1,11 @@
 ﻿using CourseManagement.Common;
-using CourseManagement.DataAccess.PORM.Data;
-using CourseManagement.Model;
+using Form.DataAccess.PORM.Data;
+using CourseManagement.Model.AdditionalModel;
 using CourseManagement.Model.EntityModel;
+using Form.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CourseManagement.DataAccess.AccessOperation
 {
@@ -17,15 +16,15 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// </summary>
         /// <param name="WhereStr"></param>
         /// <returns></returns>
-        public List<SYS_USER> GetUserInfoListAction(string WhereStr, PaginationModel Pagemodel)
+        public List<ISYS_USER> GetUserInfoListAction(string WhereStr, PaginationModel Pagemodel)
         {
-            List<SYS_USER> list = new List<SYS_USER>();
+            List<ISYS_USER> list = new List<ISYS_USER>();
             using (DBHelper db = new DBHelper())
             {
-                string sql = string.Format(@"SELECT * FROM SYS_USER WHERE 1=1 {0} ", WhereStr);
+                string sql = string.Format(@"SELECT * FROM (SELECT A.*,B.ROLENAME FROM SYS_USER A INNER JOIN SYS_ROLE B ON A.ROLEID=B.ROLEID)TB WHERE 1=1 {0} ", WhereStr);
                 try
                 {
-                    list = db.QueryList<SYS_USER>(sql, Pagemodel).ToList();
+                    list = db.QueryList<ISYS_USER>(sql, Pagemodel).ToList();
                 }
                 catch (Exception e)
                 {
@@ -55,7 +54,7 @@ namespace CourseManagement.DataAccess.AccessOperation
         public int ResetPasswordAction(string userid)
         {
             string newpassword = BaseFunction.EncryptMd5("999999");
-            string sql = string.Format(@"UPDATE SYS_USER SET PASSWORD='{1}' WHERE USERID='{0}'", userid, newpassword);
+            string sql = string.Format(@"UPDATE SYS_USER SET USERPWD='{1}' WHERE USERID='{0}'", userid, newpassword);
             using (DBHelper db = new DBHelper())
             {
                 return db.ExecuteNonQuery(sql);
@@ -101,11 +100,52 @@ namespace CourseManagement.DataAccess.AccessOperation
         /// <summary>
         /// 编辑用户信息
         /// </summary>
+        /// <param name="model"></param>
+        /// <param name="changerole"></param>
+        /// <returns></returns>
+        public int EditUserInfo(SYS_USER model,bool changerole) {
+            using (DBHelper db = new DBHelper()) {
+                int result = 0;
+                try
+                {
+                    db.BeginTransaction();
+                    if (changerole)
+                    {
+                        string delsql = string.Format(@"DELETE FROM SYS_USERAUTH WHERE USERID={0}",model.USERID);
+                        db.ExecuteNonQuery(delsql);
+                    }
+                    result=db.Update<SYS_USER>(model);
+                    db.CommitTransaction();
+                }
+                catch (Exception)
+                {
+                    db.RollbackTransaction();
+                    throw;
+                }
+                return result;
+            }
+        }
+        /// <summary>
+        /// 添加用户信息
+        /// </summary>
         /// <param name="userid"></param>
         /// <returns></returns>
-        public int EditUserInfo(SYS_USER model) {
-            using (DBHelper db = new DBHelper()) {
-                return db.Update<SYS_USER>(model);
+        public int AddUserInfo(SYS_USER model)
+        {
+            using (DBHelper db = new DBHelper())
+            {
+                return db.Insert<SYS_USER>(model);
+            }
+        }
+        /// <summary>
+        /// 获取角色信息
+        /// </summary>
+        /// <returns></returns>
+        public List<SYS_ROLE> QueryRoleList()
+        { 
+            using(DBHelper db = new DBHelper()) {
+                string sql = string.Format(@"SELECT * FROM SYS_ROLE WHERE ISUSING=1");
+                return db.QueryList<SYS_ROLE>(sql).ToList(); 
             }
         }
     }

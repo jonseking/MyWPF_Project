@@ -1,10 +1,5 @@
 ﻿using CourseManagement.Common;
-using PORM.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Form.Data;
 
 namespace CourseManagement.Model.SurchModel
 {

@@ -5,9 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CourseManagement.DataAccess.PORM.Data;
+using Form.DataAccess.PORM.Data;
 
-namespace CourseManagement.DataAccess
+namespace Form.DataAccess
 {
     public class DBHelperFactory
     {

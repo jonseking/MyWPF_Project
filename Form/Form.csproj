@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,9 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\DataPage.cs" />
+    <Compile Include="DataAccess\DBHelper.cs" />
+    <Compile Include="DataAccess\DBHelperFactory.cs" />
+    <Compile Include="DataAccess\DBType.cs" />
+    <Compile Include="DataAccess\PaginationModel.cs" />
+    <Compile Include="DataAccess\ViewModel.cs" />
     <Compile Include="Data\CommonMap.cs" />
     <Compile Include="Data\CustomAttribute.cs" />
     <Compile Include="Data\QueryParam.cs" />
+    <Compile Include="Data\RequestTypes.cs" />
+    <Compile Include="Data\WebRequestApiHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
